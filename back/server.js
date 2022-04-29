@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-// const userRouter = require('./routes/user.routes');
+const userRouter = require('./routes/user.routes');
 // const postRouter = require('./routes/post.routes');
 const testRouter = require('./routes/test.route');
 require('dotenv').config({ path: './config/.env' });
@@ -23,7 +23,7 @@ app.use(express.json());
 // jwt cookie
 
 // routes
-// app.use('/api/user', userRouter);
+app.use('/api/user', userRouter);
 // app.use('/api/post', postRouter);
 app.use('/api', testRouter);
 
