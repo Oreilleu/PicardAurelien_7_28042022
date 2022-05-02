@@ -1,26 +1,15 @@
 const router = require('express').Router();
-const authCtrl = require('../controllers/auth.controller')
-const { PrismaClient } = require('@prisma/client');
+const authCtrl = require('../controllers/auth.controller');
+const userCtrl = require('../controllers/user.controller');
 
-const prisma = new PrismaClient();
+// Auth
+router.post('/register', authCtrl.signUp);
+router.post('/login', authCtrl.signIn);
 
-router.post('/register', authCtrl.signUp)
-router.post('/login', authCtrl.signIn)
-
-// router.get('/:id', (req, res) => {
-//   res.send({ message: 'ok' });
-// });
-
-// router.post('/', (req, res) => {
-//   res.send({ message: 'ok' });
-// });
-
-// router.delete('/:id', (req, res) => {
-//   res.send({ message: 'ok' });
-// });
-
-// router.put('/:id', (req, res) => {
-//   res.send({ message: 'ok' });
-// });
+// CRUD User
+router.get('/', userCtrl.getAllUser);
+router.get('/:id', userCtrl.getOneUser);
+router.put('/:id', userCtrl.updateUser);
+router.delete('/:id', userCtrl.deleteUser);
 
 module.exports = router;
