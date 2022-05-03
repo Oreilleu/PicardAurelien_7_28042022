@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Un user peut avoir plusieurs post mais un post n'a qu'un user
 model User {
   id       Int    @id @default(autoincrement())
   pseudo   String @unique
@@ -18,6 +19,7 @@ model User {
   posts    Post[]
 }
 
+// Comment rendre video et picture non obligatoire ?
 model Post {
   id      Int    @id @default(autoincrement())
   message String

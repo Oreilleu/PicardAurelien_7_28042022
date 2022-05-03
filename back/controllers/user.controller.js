@@ -50,11 +50,19 @@ module.exports.updateUser = (req, res) => {
 module.exports.deleteUser = (req, res) => {
   const { id } = req.params;
 
-  prisma.User.delete({
+  const deletePost = prisma.Post.deleteMany({
     where: {
-      id: parseInt(id),
-    },
+      userId: parseInt(id)
+    }
   })
+
+  const deleteUser = prisma.User.delete({
+    where: {
+      id: parseInt(id)
+    }
+  })
+
+  prisma.$transaction([deletePost, deleteUser])
     .then(() => res.status(201).json({ message: 'Utilisateur supprimer' }))
     .catch((err) => res.status(400).json({ err }));
 };
