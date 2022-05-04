@@ -78,26 +78,36 @@ module.exports.likePost = (req, res) => {
   // Sur la route like, je veux ajouter l'id des params dans la colonne postID
   // Ajouter le userId dans la colonne userID
 
-  prisma.Post.findUnique({
-    where: {
-      id: parseInt(id),
-      // userId: parseInt(userId)
-    }
-  })
-    // Si je le post est trouvé je vérifie que le user ID est présent pour le post
-    .then(post => post
-      ? res.send('ok')
-      : res.send('pas trouvé'))
-    .catch(err => console.log({ err }))
-
-  // prisma.Like.findUnique({
+  // prisma.Post.findUnique({
   //   where: {
-  //     userId: parseInt(userId)
+  //     id: parseInt(id),
+  //     // userId: parseInt(userId)
   //   }
   // })
-  //   .then(user => user ? res.send('ok') : res.send('ko'))
-  //   .catch(err => res.send({ err }))
+  //   // Si je le post est trouvé je vérifie que le user ID est présent pour le post
+  //   .then(post => post
+  //     ? res.send('ok')
+  //     // (prisma.Like.findUnique({
+  //     //   where: {
+  //     //     userId: parseInt(userId)
+  //     //   },
+  //     // })
+  //     //   .then(user => user ? res.send('ok') : res.send('ko'))
+  //     //   .catch(err => res.send({ err })))
+  //     : res.send('pas trouvé'))
+  //   .catch(err => console.log({ err }))
 
+
+  (prisma.Like.findMany({
+    // where: {
+    //   userId: parseInt(userId)
+    // },
+    where: {
+      postId: parseInt(id)
+    }
+  })
+    .then(user => user ? res.send({ user }) : res.send('ko'))
+    .catch(err => res.send({ err })))
   // prisma.like.create({
   //   data: {
   //     userId: parseInt(userId),
