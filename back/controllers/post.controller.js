@@ -75,52 +75,39 @@ module.exports.deletePost = (req, res) => {
 module.exports.likePost = (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
+  // Sur la route like, je veux ajouter l'id des params dans la colonne postID
+  // Ajouter le userId dans la colonne userID
 
-  //   prisma.Like.create({
-  //     data: {
-  //       userId: parseInt(userId),
-  //       postId: parseInt(id),
-  //     },
-  //   })
-  //     .then(() => {
-  //       prisma.Like.findUnique({
-  //         where: {
-  //           userId: parseInt(userId),
-  //         },
-  //       })
-  //         .then(() => res.send({ message: 'déja like' }))
-  //         .catch((err) => res.send({ err }));
-  //     })
-  //     .catch(() => res.send('ko'));
-
-  //   prisma.like
-  //     .findUnique({
-  //       where: {
-  //         postId: parseInt(id),
-  //       },
-  //     })
-  //     .then(() => {
-  //       userId ? res.send('oui') : res.send('non');
-  //     })
-  //     .catch((err) => res.send({ err }));
-
-  prisma.Like.findUnique({
+  prisma.Post.findUnique({
     where: {
-      userId: parseInt(userId),
-    },
+      id: parseInt(id),
+      // userId: parseInt(userId)
+    }
   })
-    .then((postLike) => {
-      console.log(postLike);
-      // postLike
-      //   ? res.send({ message: 'déja liké' })
-      //   : prisma.Like.create({
-      //       data: {
-      //         userId: parseInt(userId),
-      //         postId: parseInt(id),
-      //       },
-      //     });
-    })
-    .catch((err) => res.send({ err }));
+    // Si je le post est trouvé je vérifie que le user ID est présent pour le post
+    .then(post => post
+      ? res.send('ok')
+      : res.send('pas trouvé'))
+    .catch(err => console.log({ err }))
+
+  // prisma.Like.findUnique({
+  //   where: {
+  //     userId: parseInt(userId)
+  //   }
+  // })
+  //   .then(user => user ? res.send('ok') : res.send('ko'))
+  //   .catch(err => res.send({ err }))
+
+  // prisma.like.create({
+  //   data: {
+  //     userId: parseInt(userId),
+  //     postId: parseInt(id)
+  //   }
+  // })
+  //   .then(() => res.send('Post liké'))
+  //   .catch((err) => res.send({ err }))
+
+  // Puis je veux vérifier que le userId n'est pas deja présent dans la colonne de postId
 };
 
-module.exports.unlikePost = (req, res) => {};
+module.exports.unlikePost = (req, res) => { };
