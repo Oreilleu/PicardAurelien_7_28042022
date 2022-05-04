@@ -1,20 +1,24 @@
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
+const { post, like } = prisma;
 
 module.exports.createPost = (req, res) => {
   const { id } = req.params;
   const { userId, message, picture, video } = req.body;
-  // const data = { userId, message, picture, video }
-  prisma.Post.create({
-    // Comment passer dinamiquement le userId ??
-    data: {
-      userId: parseInt(userId),
-      message: message,
-      picture,
-      video,
-    },
-  })
+  post
+    .create({
+      data: {
+        message,
+        picture,
+        video,
+        User: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    })
     .then(() => {
       res.status(201).json({ message: 'post créer' });
     })
@@ -22,7 +26,6 @@ module.exports.createPost = (req, res) => {
 };
 
 module.exports.getAllPost = (req, res) => {
-  //   console.log(req.body);
   prisma.Post.findMany({})
     .then((post) => res.status(200).json({ post }))
     .catch((err) => res.status(400).json({ err }));
@@ -75,49 +78,27 @@ module.exports.deletePost = (req, res) => {
 module.exports.likePost = (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
-  // Sur la route like, je veux ajouter l'id des params dans la colonne postID
-  // Ajouter le userId dans la colonne userID
 
-  // prisma.Post.findUnique({
-  //   where: {
-  //     id: parseInt(id),
-  //     // userId: parseInt(userId)
-  //   }
-  // })
-  //   // Si je le post est trouvé je vérifie que le user ID est présent pour le post
-  //   .then(post => post
-  //     ? res.send('ok')
-  //     // (prisma.Like.findUnique({
-  //     //   where: {
-  //     //     userId: parseInt(userId)
-  //     //   },
-  //     // })
-  //     //   .then(user => user ? res.send('ok') : res.send('ko'))
-  //     //   .catch(err => res.send({ err })))
-  //     : res.send('pas trouvé'))
-  //   .catch(err => console.log({ err }))
+  like
+    .create({
+      data: {
+        userId: parseInt(userId),
+        postId: parseInt(id),
+      },
+    })
+    .then(() => res.status(200).json({ message: 'post liké' }))
+    // like
+    //   .findUnique({
+    //     where: {
+    //       postId: id,
+    //     },
+    //   })
+    //   .then((datta) => console.log(datta))
+    //   .catch((err) => console.log(err))
+    // )
 
-
-  (prisma.Like.findMany({
-    // where: {
-    //   userId: parseInt(userId)
-    // },
-    where: {
-      postId: parseInt(id)
-    }
-  })
-    .then(user => user ? res.send({ user }) : res.send('ko'))
-    .catch(err => res.send({ err })))
-  // prisma.like.create({
-  //   data: {
-  //     userId: parseInt(userId),
-  //     postId: parseInt(id)
-  //   }
-  // })
-  //   .then(() => res.send('Post liké'))
-  //   .catch((err) => res.send({ err }))
-
-  // Puis je veux vérifier que le userId n'est pas deja présent dans la colonne de postId
+    // Est ce que je garde comme ca ou je garde le catch pour l'erreur ? YAZID
+    .catch((err) => res.send({ message: 'déja liké' }));
 };
 
-module.exports.unlikePost = (req, res) => { };
+module.exports.unlikePost = (req, res) => {};
