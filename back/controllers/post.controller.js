@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
-const { post, like } = prisma;
+const { post, like, comments } = prisma;
 
 module.exports.createPost = (req, res) => {
   const { id } = req.params;
@@ -119,3 +119,28 @@ module.exports.unlikePost = (req, res) => {
     )
     .catch((err) => res.send({ message: 'Post non liké' }))
 };
+
+module.exports.commentPost = (req, res) => {
+  // YAZID - Voir pour afficher l'array des posts coter front
+
+  const { id } = req.params
+  const { message, picture } = req.body
+
+  comments.create({
+    data: {
+      message,
+      picture,
+      Post: {
+        connect: {
+          id: parseInt(id)
+        }
+      }
+    }
+  })
+    .then((post) => res.status(201).json({ post }))
+    .catch((err) => res.statusu(400).json({ err }))
+}
+
+module.exports.updateCommentPost = (req, res) => {
+
+}

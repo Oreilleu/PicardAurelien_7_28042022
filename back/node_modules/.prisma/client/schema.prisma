@@ -22,17 +22,18 @@ model User {
 
 // Comment rendre video et picture non obligatoire ?
 model Post {
-  id      Int     @id @default(autoincrement())
-  message String
-  picture String?
-  video   String?
-  like    Like[]
-  User    User?   @relation(fields: [userId], references: [id])
-  userId  Int?
+  id        Int        @id @default(autoincrement())
+  message   String
+  picture   String?
+  video     String?
+  createdAt DateTime   @default(now())
+  like      Like[]
+  comments  Comments[]
+  User      User?      @relation(fields: [userId], references: [id])
+  userId    Int?
 }
 
-// Like est un array pour retrouver si un utilisateur à déja liké ou non un post
-// Et pour savoir combien de like a un post
+// Many to many
 model Like {
   Post   Post @relation(fields: [postId], references: [id])
   postId Int
@@ -43,5 +44,13 @@ model Like {
 }
 
 // Table comments
+model Comments {
+  id        Int      @id @default(autoincrement())
+  message   String
+  picture   String?
+  createdAt DateTime @default(now())
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+}
 
 // Table image
