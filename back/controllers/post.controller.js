@@ -122,9 +122,10 @@ module.exports.unlikePost = (req, res) => {
 
 module.exports.commentPost = (req, res) => {
   // YAZID - Voir pour afficher l'array des posts coter front
+  // YAZID - La je recup l'id du post et pour update et delete l'id du comment ?
 
   const { id } = req.params
-  const { message, picture } = req.body
+  const { userId, message, picture } = req.body
 
   comments.create({
     data: {
@@ -134,13 +135,45 @@ module.exports.commentPost = (req, res) => {
         connect: {
           id: parseInt(id)
         }
+      },
+      User:{
+        connect:{
+          id: parseInt(userId)
+        }
       }
     }
   })
     .then((post) => res.status(201).json({ post }))
-    .catch((err) => res.statusu(400).json({ err }))
+    .catch((err) => res.status(400).json({ err }))
 }
 
 module.exports.updateCommentPost = (req, res) => {
+  const {id} = req.params
+  const {message, picture} = req.body
+
+
+  comments.update({
+    where: {
+      id: parseInt(id)
+    },
+    data:{
+      message,
+      picture
+    }
+  })
+  .then((comment) => res.status(201).json({comment}))
+  .catch((err) => res.status(201).json({err}))
+}
+
+module.exports.deleteCommentPost = (req, res) => {
+  const {id} = req.params
+
+  comments.delete({
+    where: {
+      id: parseInt(id)
+    }
+  })
+  .then(() => res.status(200).json({message : 'comment delete'}))
+  .catch((err) => res.status(400).json({err}))
 
 }
