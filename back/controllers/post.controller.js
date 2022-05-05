@@ -101,4 +101,21 @@ module.exports.likePost = (req, res) => {
     .catch((err) => res.send({ message: 'déja liké' }));
 };
 
-module.exports.unlikePost = (req, res) => {};
+module.exports.unlikePost = (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  like.deleteMany({
+    where: {
+      postId: parseInt(id),
+      userId: parseInt(userId)
+    }
+  })
+    .then((post) =>
+      post.count == 0 ?
+        res.send({ message: "post non liké" })
+        :
+        res.status(200).json({ message: 'post unliké' })
+    )
+    .catch((err) => res.send({ message: 'Post non liké' }))
+};
