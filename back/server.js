@@ -3,6 +3,8 @@ const cors = require('cors');
 const userRouter = require('./routes/user.routes');
 const postRouter = require('./routes/post.routes');
 require('dotenv').config({ path: './config/.env' });
+const { checkUser } = require('./middleware/auth.middleware')
+
 
 const app = express();
 
@@ -18,8 +20,6 @@ const corsOptions = {
 // config
 app.use(cors(corsOptions));
 app.use(express.json());
-
-// jwt cookie
 
 // routes
 app.use('/api/user', userRouter);

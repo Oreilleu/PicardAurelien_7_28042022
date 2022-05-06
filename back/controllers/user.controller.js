@@ -7,14 +7,6 @@ module.exports.getAllUser = (req, res) => {
   prisma.User.findMany({})
     .then((user) => res.status(200).json({ user }))
     .catch((err) => res.status(400).json({ err }));
-
-  //   try {
-  //     const products = await prisma.User.findMany({});
-  //     res.json(products);
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.send('no');
-  //   }
 };
 
 module.exports.getOneUser = (req, res) => {

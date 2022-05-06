@@ -15,30 +15,11 @@ module.exports.signUp = (req, res) => {
 
   bcrypt.hash(password, 10).then((hash) => {
     const data = { pseudo, email, password: hash };
-    // password = hash;
 
-    // A quoi sert le select ??? YAZID
-    // const select = { id: true, email: true }
     prisma.User.create({ data })
       .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
       .catch((err) => res.status(400).json({ err }));
   });
-
-  // async function main() {
-  //     const newUser = await prisma.User.create({
-  //         data: {
-  //             pseudo,
-  //             email,
-  //             password
-  //         },
-  //         select: {
-  //             id: true,
-  //             email: true
-  //         }
-  //     })
-  //     console.log(newUser)
-  // }
-  // main().catch(err => res.send('marche pas'))
 };
 
 module.exports.signIn = (req, res) => {
@@ -58,9 +39,9 @@ module.exports.signIn = (req, res) => {
             return res.status(401).json({ error: 'Mot de passe incorrect' });
           }
 
-          //Génère un token si le password est ok
+          //Génère un token si le password est ok et le passe en cookie
           const token = createToken(user.id);
-          console.log(token);
+          // res.cookie('jwt', token, { httpOnly: true, expiresIn: '12h' })
 
           // Réponse
           res.status(200).json({ userId: user.id, token });

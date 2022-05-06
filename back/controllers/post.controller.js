@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-
 const prisma = new PrismaClient();
 const { post, like, comments } = prisma;
+
 
 module.exports.createPost = (req, res) => {
   const { id } = req.params;
@@ -136,8 +136,8 @@ module.exports.commentPost = (req, res) => {
           id: parseInt(id)
         }
       },
-      User:{
-        connect:{
+      User: {
+        connect: {
           id: parseInt(userId)
         }
       }
@@ -148,32 +148,32 @@ module.exports.commentPost = (req, res) => {
 }
 
 module.exports.updateCommentPost = (req, res) => {
-  const {id} = req.params
-  const {message, picture} = req.body
+  const { id } = req.params
+  const { message, picture } = req.body
 
 
   comments.update({
     where: {
       id: parseInt(id)
     },
-    data:{
+    data: {
       message,
       picture
     }
   })
-  .then((comment) => res.status(201).json({comment}))
-  .catch((err) => res.status(201).json({err}))
+    .then((comment) => res.status(201).json({ comment }))
+    .catch((err) => res.status(201).json({ err }))
 }
 
 module.exports.deleteCommentPost = (req, res) => {
-  const {id} = req.params
+  const { id } = req.params
 
   comments.delete({
     where: {
       id: parseInt(id)
     }
   })
-  .then(() => res.status(200).json({message : 'comment delete'}))
-  .catch((err) => res.status(400).json({err}))
+    .then(() => res.status(200).json({ message: 'comment delete' }))
+    .catch((err) => res.status(400).json({ err }))
 
 }
