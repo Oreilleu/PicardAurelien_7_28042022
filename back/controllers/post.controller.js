@@ -1,11 +1,39 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { post, like, comments } = prisma;
+const fs = require('fs');
+const { promisify } = require('util');
+const pipeline = promisify(require('stream').pipeline);
 
-
-module.exports.createPost = (req, res) => {
+module.exports.createPost = async (req, res) => {
+  // Je dois mettre vidéo ?
+  // Gif ca passe dans image ?
   const { id } = req.params;
   const { userId, message, picture, video } = req.body;
+  let fileName;
+
+  // if (req.file !== null) {
+  //   try {
+  //     if (
+  //       req.file.detectedMimeType !== 'image/jpg' &&
+  //       req.file.detectedMimeType !== 'image/jpeg' &&
+  //       req.file.detectedMimeType !== 'image/png'
+  //     )
+  //       throw Error('Invalid file');
+
+  //     if (req.file.size > 500000) throw Error('max size');
+  //   } catch (err) {
+  //     // const errors = uploadErrors(err)
+  //     // return res.status(201).json({ err });
+  //     console.log(err);
+  //   }
+  //   fileName = req.body.userId + Date.now() + '.jpg';
+
+  //   await pipeline(
+  //     req.file.stream,
+  //     fs.createWriteStream(`${__dirname}/../images/${fileName}`)
+  //   );
+  // }
   post
     .create({
       data: {
@@ -23,6 +51,37 @@ module.exports.createPost = (req, res) => {
       res.status(201).json({ message: 'post créer' });
     })
     .catch((err) => res.status(400).json({ err }));
+
+  // req.file
+  //   ? post
+  //       .create({
+  //         data: {
+  //           ...req.body,
+  //           picture: '/images/' + fileName,
+  //           User: {
+  //             connect: {
+  //               id: userId,
+  //             },
+  //           },
+  //         },
+  //       })
+  //       .then(() => {
+  //         res.status(201).json({ message: 'post créer' });
+  //       })
+  //       .catch((err) => res.status(400).json({ err }))
+  //   : post
+  //       .create({
+  //         data: {
+  //           ...req.body,
+  //           User: {
+  //             connect: {
+  //               id: userId,
+  //             },
+  //           },
+  //         },
+  //       })
+  //       .then(() => res.status('ok'))
+  //       .catch((err) => res.status('ko' + err));
 };
 
 module.exports.getAllPost = (req, res) => {
@@ -105,75 +164,77 @@ module.exports.unlikePost = (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
 
-  like.deleteMany({
-    where: {
-      postId: parseInt(id),
-      userId: parseInt(userId)
-    }
-  })
+  like
+    .deleteMany({
+      where: {
+        postId: parseInt(id),
+        userId: parseInt(userId),
+      },
+    })
     .then((post) =>
-      post.count == 0 ?
-        res.send({ message: "post non liké" })
-        :
-        res.status(200).json({ message: 'post unliké' })
+      post.count == 0
+        ? res.send({ message: 'post non liké' })
+        : res.status(200).json({ message: 'post unliké' })
     )
-    .catch((err) => res.send({ message: 'Post non liké' }))
+    .catch((err) => res.send({ message: 'Post non liké' }));
 };
 
 module.exports.commentPost = (req, res) => {
   // YAZID - Voir pour afficher l'array des posts coter front
   // YAZID - La je recup l'id du post et pour update et delete l'id du comment ?
+  // YAZID - Le token d'authentification est bien dans bearer token avec la tech que j'ai utilisé
 
-  const { id } = req.params
-  const { userId, message, picture } = req.body
+  const { id } = req.params;
+  const { userId, message, picture } = req.body;
 
-  comments.create({
-    data: {
-      message,
-      picture,
-      Post: {
-        connect: {
-          id: parseInt(id)
-        }
+  comments
+    .create({
+      data: {
+        message,
+        picture,
+        Post: {
+          connect: {
+            id: parseInt(id),
+          },
+        },
+        User: {
+          connect: {
+            id: parseInt(userId),
+          },
+        },
       },
-      User: {
-        connect: {
-          id: parseInt(userId)
-        }
-      }
-    }
-  })
+    })
     .then((post) => res.status(201).json({ post }))
-    .catch((err) => res.status(400).json({ err }))
-}
+    .catch((err) => res.status(400).json({ err }));
+};
 
 module.exports.updateCommentPost = (req, res) => {
-  const { id } = req.params
-  const { message, picture } = req.body
+  const { id } = req.params;
+  const { message, picture } = req.body;
 
-
-  comments.update({
-    where: {
-      id: parseInt(id)
-    },
-    data: {
-      message,
-      picture
-    }
-  })
+  comments
+    .update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        message,
+        picture,
+      },
+    })
     .then((comment) => res.status(201).json({ comment }))
-    .catch((err) => res.status(201).json({ err }))
-}
+    .catch((err) => res.status(201).json({ err }));
+};
 
 module.exports.deleteCommentPost = (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
 
-  comments.delete({
-    where: {
-      id: parseInt(id)
-    }
-  })
+  comments
+    .delete({
+      where: {
+        id: parseInt(id),
+      },
+    })
     .then(() => res.status(200).json({ message: 'comment delete' }))
-    .catch((err) => res.status(400).json({ err }))
-
-}
+    .catch((err) => res.status(400).json({ err }));
+};
