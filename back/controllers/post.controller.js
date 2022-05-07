@@ -1,41 +1,49 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { post, like, comments } = prisma;
-// const fs = require('fs');
-// const { promisify } = require('util');
-// const pipeline = promisify(require('stream').pipeline);
 
 module.exports.createPost = async (req, res) => {
-  // Je dois mettre vidéo ?
   // Gif ca passe dans image ?
   const { id } = req.params;
-  // const { userId } = req.body.data;
-  const { userId, message, picture, video } = req.body.data;
-
+  const { userId } = req.body;
   const data = JSON.parse(req.body.data);
-  // JSON.parse ???
-  console.log(data);
-  console.log(req.file);
 
-  post
-    .create({
-      data: {
-        ...data,
-        userId,
-        picture: `${req.protocol}://${req.get('host')}/images/${
-          req.file.filename
-        }`,
-        User: {
-          connect: {
-            id: data.userId,
+  // Bonne utilisation de form data : postman + code ???
+
+  req.file
+    ? post
+        .create({
+          data: {
+            ...data,
+            userId,
+            picture: `${req.protocol}://${req.get('host')}/images/${
+              req.file.filename
+            }`,
+            User: {
+              connect: {
+                id: data.userId,
+              },
+            },
           },
-        },
-      },
-    })
-    .then(() => {
-      res.status(201).json({ message: 'post créer' });
-    })
-    .catch((err) => console.log(err));
+        })
+        .then(() => {
+          res.status(201).json({ message: 'post créer' });
+        })
+        .catch((err) => res.status(400).json({ err }))
+    : post
+        .create({
+          data: {
+            ...data,
+            userId,
+            User: {
+              connect: {
+                id: data.userId,
+              },
+            },
+          },
+        })
+        .then(() => res.status(200).json({ message: 'post créer' }))
+        .catch((err) => res.status(400).json({ err }));
 };
 
 module.exports.getAllPost = (req, res) => {
@@ -60,20 +68,33 @@ module.exports.getOnePost = (req, res) => {
 
 module.exports.updatePost = (req, res) => {
   const { id } = req.params;
-  const { message, picture, video } = req.body;
+  const { message } = req.body;
+  const data = JSON.parse(req.body.data);
 
-  prisma.Post.update({
-    where: {
-      id: parseInt(id),
-    },
-    data: {
-      message,
-      picture,
-      video,
-    },
-  })
-    .then(() => res.status(201).json({ message: 'Post modifer' }))
-    .catch((err) => res.status(400).json({ err }));
+  req.file
+    ? prisma.Post.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          ...data,
+          picture: `${req.protocol}://${req.get('host')}/images/${
+            req.file.filename
+          }`,
+        },
+      })
+        .then(() => res.status(201).json({ message: 'Post modifié' }))
+        .catch((err) => res.status(400).json({ err }))
+    : prisma.Post.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          ...data,
+        },
+      })
+        .then(() => res.status(201).json({ message: 'Post modifié' }))
+        .catch((err) => res.status(400).json({ err }));
 };
 
 module.exports.deletePost = (req, res) => {
@@ -133,33 +154,63 @@ module.exports.unlikePost = (req, res) => {
     .catch((err) => res.send({ message: 'Post non liké' }));
 };
 
+// YAZID - Voir pour afficher l'array des posts coter front
+// YAZID - La je recup l'id du post et pour update et delete l'id du comment ?
+// YAZID - Le token d'authentification est bien dans bearer token avec la tech que j'ai utilisé
 module.exports.commentPost = (req, res) => {
-  // YAZID - Voir pour afficher l'array des posts coter front
-  // YAZID - La je recup l'id du post et pour update et delete l'id du comment ?
-  // YAZID - Le token d'authentification est bien dans bearer token avec la tech que j'ai utilisé
-
   const { id } = req.params;
-  const { userId, message, picture } = req.body;
+  // const { userId, message } = req.body;
+  // const dataa = JSON.parse(req.body.data);
+  // const data = JSON.parse(req.body.data);
+  const data = JSON.stringify(req.body.data);
+  console.log(data);
 
-  comments
-    .create({
-      data: {
-        message,
-        picture,
-        Post: {
-          connect: {
-            id: parseInt(id),
-          },
-        },
-        User: {
-          connect: {
-            id: parseInt(userId),
-          },
-        },
-      },
-    })
-    .then((post) => res.status(201).json({ post }))
-    .catch((err) => res.status(400).json({ err }));
+  // console.log(userId, message);
+  // console.log(dataa);
+  // req.file
+  //   ? comments
+  //       .create({
+  //         data: {
+  //           userId,
+  //           message,
+  //           picture: `${req.protocol}://${req.get('host')}/images/${
+  //             req.file.filename
+  //           }`,
+  //           Post: {
+  //             connect: {
+  //               id: parseInt(id),
+  //             },
+  //           },
+  //           User: {
+  //             connect: {
+  //               id: parseInt(userId),
+  //             },
+  //           },
+  //         },
+  //       })
+  //       .then(() => {
+  //         res.status(201).json({ message: 'post créer' });
+  //       })
+  //       .catch((err) => res.status(400).json({ err }))
+  //   : comments
+  //       .create({
+  //         data: {
+  //           userId,
+  //           message,
+  //           Post: {
+  //             connect: {
+  //               id: parseInt(id),
+  //             },
+  //           },
+  //           User: {
+  //             connect: {
+  //               id: userId,
+  //             },
+  //           },
+  //         },
+  //       })
+  //       .then(() => res.status(200).json({ message: 'post créer' }))
+  //       .catch((err) => console.log(err));
 };
 
 module.exports.updateCommentPost = (req, res) => {
