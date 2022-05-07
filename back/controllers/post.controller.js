@@ -1,48 +1,33 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { post, like, comments } = prisma;
-const fs = require('fs');
-const { promisify } = require('util');
-const pipeline = promisify(require('stream').pipeline);
+// const fs = require('fs');
+// const { promisify } = require('util');
+// const pipeline = promisify(require('stream').pipeline);
 
 module.exports.createPost = async (req, res) => {
   // Je dois mettre vidéo ?
   // Gif ca passe dans image ?
   const { id } = req.params;
-  const { userId, message, picture, video } = req.body;
-  let fileName;
+  // const { userId } = req.body.data;
+  const { userId, message, picture, video } = req.body.data;
 
-  // if (req.file !== null) {
-  //   try {
-  //     if (
-  //       req.file.detectedMimeType !== 'image/jpg' &&
-  //       req.file.detectedMimeType !== 'image/jpeg' &&
-  //       req.file.detectedMimeType !== 'image/png'
-  //     )
-  //       throw Error('Invalid file');
+  const data = JSON.parse(req.body.data);
+  // JSON.parse ???
+  console.log(data);
+  console.log(req.file);
 
-  //     if (req.file.size > 500000) throw Error('max size');
-  //   } catch (err) {
-  //     // const errors = uploadErrors(err)
-  //     // return res.status(201).json({ err });
-  //     console.log(err);
-  //   }
-  //   fileName = req.body.userId + Date.now() + '.jpg';
-
-  //   await pipeline(
-  //     req.file.stream,
-  //     fs.createWriteStream(`${__dirname}/../images/${fileName}`)
-  //   );
-  // }
   post
     .create({
       data: {
-        message,
-        picture,
-        video,
+        ...data,
+        userId,
+        picture: `${req.protocol}://${req.get('host')}/images/${
+          req.file.filename
+        }`,
         User: {
           connect: {
-            id: userId,
+            id: data.userId,
           },
         },
       },
@@ -50,38 +35,7 @@ module.exports.createPost = async (req, res) => {
     .then(() => {
       res.status(201).json({ message: 'post créer' });
     })
-    .catch((err) => res.status(400).json({ err }));
-
-  // req.file
-  //   ? post
-  //       .create({
-  //         data: {
-  //           ...req.body,
-  //           picture: '/images/' + fileName,
-  //           User: {
-  //             connect: {
-  //               id: userId,
-  //             },
-  //           },
-  //         },
-  //       })
-  //       .then(() => {
-  //         res.status(201).json({ message: 'post créer' });
-  //       })
-  //       .catch((err) => res.status(400).json({ err }))
-  //   : post
-  //       .create({
-  //         data: {
-  //           ...req.body,
-  //           User: {
-  //             connect: {
-  //               id: userId,
-  //             },
-  //           },
-  //         },
-  //       })
-  //       .then(() => res.status('ok'))
-  //       .catch((err) => res.status('ko' + err));
+    .catch((err) => console.log(err));
 };
 
 module.exports.getAllPost = (req, res) => {

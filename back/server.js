@@ -3,8 +3,7 @@ const cors = require('cors');
 const userRouter = require('./routes/user.routes');
 const postRouter = require('./routes/post.routes');
 require('dotenv').config({ path: './config/.env' });
-const { checkUser } = require('./middleware/auth.middleware')
-
+const path = require('path');
 
 const app = express();
 
@@ -20,6 +19,7 @@ const corsOptions = {
 // config
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // routes
 app.use('/api/user', userRouter);
