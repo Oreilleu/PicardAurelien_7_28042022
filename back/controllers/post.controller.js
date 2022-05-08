@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { post, like, comments } = prisma;
+const { post, like, comments, image } = prisma;
 
 module.exports.createPost = async (req, res) => {
   // Gif ca passe dans image ?
@@ -16,9 +16,6 @@ module.exports.createPost = async (req, res) => {
           data: {
             ...data,
             userId,
-            picture: `${req.protocol}://${req.get('host')}/images/${
-              req.file.filename
-            }`,
             User: {
               connect: {
                 id: data.userId,
@@ -26,10 +23,24 @@ module.exports.createPost = async (req, res) => {
             },
           },
         })
-        .then(() => {
-          res.status(201).json({ message: 'post créer' });
-        })
-        .catch((err) => res.status(400).json({ err }))
+        .then((post) =>
+          image
+            .create({
+              data: {
+                image: `${req.protocol}://${req.get('host')}/images/${
+                  req.file.filename
+                }`,
+                Post: {
+                  connect: {
+                    id: JSON.parse(post.id),
+                  },
+                },
+              },
+            })
+            .then((post) => res.send({ post }))
+            .catch((err) => res.send({ err }))
+        )
+        .catch((err) => res.send({ err }))
     : post
         .create({
           data: {
@@ -42,7 +53,7 @@ module.exports.createPost = async (req, res) => {
             },
           },
         })
-        .then(() => res.status(200).json({ message: 'post créer' }))
+        .then((post) => res.status(200).json(post))
         .catch((err) => res.status(400).json({ err }));
 };
 
@@ -68,8 +79,10 @@ module.exports.getOnePost = (req, res) => {
 
 module.exports.updatePost = (req, res) => {
   const { id } = req.params;
-  const { message } = req.body;
   const data = JSON.parse(req.body.data);
+  console.log(JSON.stringify(image.postId));
+
+  // Voir avec Yazid si ca va pas update plusieurs ligne si il y a deux photos
 
   req.file
     ? prisma.Post.update({
@@ -78,12 +91,27 @@ module.exports.updatePost = (req, res) => {
         },
         data: {
           ...data,
-          picture: `${req.protocol}://${req.get('host')}/images/${
-            req.file.filename
-          }`,
         },
       })
-        .then(() => res.status(201).json({ message: 'Post modifié' }))
+        .then((post) => {
+          console.log(post);
+          console.log(id);
+          image
+            .updateMany({
+              where: {
+                postId: JSON.parse(id),
+              },
+              data: {
+                image: `${req.protocol}://${req.get('host')}/images/${
+                  req.file.filename
+                }`,
+              },
+            })
+            .then((post) =>
+              res.status(201).json({ message: 'post modifié', post })
+            )
+            .catch((err) => console.log(err));
+        })
         .catch((err) => res.status(400).json({ err }))
     : prisma.Post.update({
         where: {
@@ -93,7 +121,7 @@ module.exports.updatePost = (req, res) => {
           ...data,
         },
       })
-        .then(() => res.status(201).json({ message: 'Post modifié' }))
+        .then((post) => res.status(201).json({ message: 'Post modifié', post }))
         .catch((err) => res.status(400).json({ err }));
 };
 
@@ -158,59 +186,58 @@ module.exports.unlikePost = (req, res) => {
 // YAZID - La je recup l'id du post et pour update et delete l'id du comment ?
 // YAZID - Le token d'authentification est bien dans bearer token avec la tech que j'ai utilisé
 module.exports.commentPost = (req, res) => {
+  // YAZID - route update hs je peux pas exploiter les form data
+
   const { id } = req.params;
-  // const { userId, message } = req.body;
-  // const dataa = JSON.parse(req.body.data);
-  // const data = JSON.parse(req.body.data);
-  const data = JSON.stringify(req.body.data);
+  const { userId, message } = req.body;
+  const data = JSON.parse(req.body.data);
+  // const data = JSON.stringify(req.body.data);
   console.log(data);
 
-  // console.log(userId, message);
-  // console.log(dataa);
-  // req.file
-  //   ? comments
-  //       .create({
-  //         data: {
-  //           userId,
-  //           message,
-  //           picture: `${req.protocol}://${req.get('host')}/images/${
-  //             req.file.filename
-  //           }`,
-  //           Post: {
-  //             connect: {
-  //               id: parseInt(id),
-  //             },
-  //           },
-  //           User: {
-  //             connect: {
-  //               id: parseInt(userId),
-  //             },
-  //           },
-  //         },
-  //       })
-  //       .then(() => {
-  //         res.status(201).json({ message: 'post créer' });
-  //       })
-  //       .catch((err) => res.status(400).json({ err }))
-  //   : comments
-  //       .create({
-  //         data: {
-  //           userId,
-  //           message,
-  //           Post: {
-  //             connect: {
-  //               id: parseInt(id),
-  //             },
-  //           },
-  //           User: {
-  //             connect: {
-  //               id: userId,
-  //             },
-  //           },
-  //         },
-  //       })
-  //       .then(() => res.status(200).json({ message: 'post créer' }))
-  //       .catch((err) => console.log(err));
+  req.file
+    ? comments
+        .create({
+          data: {
+            userId,
+            message,
+            picture: `${req.protocol}://${req.get('host')}/images/${
+              req.file.filename
+            }`,
+            Post: {
+              connect: {
+                id: parseInt(id),
+              },
+            },
+            User: {
+              connect: {
+                id: parseInt(userId),
+              },
+            },
+          },
+        })
+        .then(() => {
+          res.status(201).json({ message: 'post créer' });
+        })
+        .catch((err) => res.status(400).json({ err }))
+    : comments
+        .create({
+          data: {
+            userId,
+            message,
+            Post: {
+              connect: {
+                id: parseInt(id),
+              },
+            },
+            User: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+        })
+        .then(() => res.status(200).json({ message: 'post créer' }))
+        .catch((err) => console.log(err));
 };
 
 module.exports.updateCommentPost = (req, res) => {

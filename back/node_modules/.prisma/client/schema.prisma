@@ -15,6 +15,7 @@ model User {
   id       Int        @id @default(autoincrement())
   pseudo   String     @unique
   email    String     @unique
+  picture  String?
   password String
   posts    Post[]
   like     Like[]
@@ -25,7 +26,7 @@ model User {
 model Post {
   id        Int        @id @default(autoincrement())
   message   String
-  picture   String?
+  picture   Image[]
   createdAt DateTime   @default(now())
   like      Like[]
   comments  Comments[]
@@ -47,7 +48,7 @@ model Like {
 model Comments {
   id        Int      @id @default(autoincrement())
   message   String
-  picture   String?
+  // picture   Image[]
   createdAt DateTime @default(now())
   Post      Post?    @relation(fields: [postId], references: [id])
   postId    Int?
@@ -55,4 +56,11 @@ model Comments {
   userId    Int?
 }
 
-// Table image
+model Image {
+  id     Int    @id @default(autoincrement())
+  image  String
+  Post   Post?  @relation(fields: [postId], references: [id])
+  postId Int?
+  // Comments   Comments? @relation(fields: [commentsId], references: [id])
+  // commentsId Int?
+}

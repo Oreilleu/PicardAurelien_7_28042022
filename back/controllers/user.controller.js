@@ -1,10 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
-
 const prisma = new PrismaClient();
+
+const { user, post } = prisma;
 
 module.exports.getAllUser = (req, res) => {
   //   console.log(req.body);
-  prisma.User.findMany({})
+  user
+    .findMany({})
     .then((user) => res.status(200).json({ user }))
     .catch((err) => res.status(400).json({ err }));
 };
@@ -12,9 +14,10 @@ module.exports.getAllUser = (req, res) => {
 module.exports.getOneUser = (req, res) => {
   const { id } = req.params;
 
-  prisma.User.findUnique({
-    where: { id: parseInt(id) },
-  })
+  user
+    .findUnique({
+      where: { id: parseInt(id) },
+    })
     .then((user) =>
       user
         ? res.status(200).json({ user })
@@ -25,36 +28,56 @@ module.exports.getOneUser = (req, res) => {
 
 module.exports.updateUser = (req, res) => {
   const { id } = req.params;
-  const { pseudo } = req.body;
+  const { pseudo, picture } = req.body;
 
-  prisma.User.update({
-    where: {
-      id: parseInt(id),
-    },
-    data: {
-      pseudo,
-    },
-  })
-    .then(() => res.status(201).json({ message: 'Utilisateur modifer' }))
-    .catch((err) => res.status(400).json({ err }));
+  // Modifie que l'imaage
+  req.file
+    ? user
+        .update({
+          where: {
+            id: parseInt(id),
+          },
+          data: {
+            pseudo,
+            picture: `${req.protocol}://${req.get('host')}/images/${
+              req.file.filename
+            }`,
+          },
+        })
+        .then((user) =>
+          res.status(201).json({ message: 'Utilisateur modifier', user })
+        )
+        .catch((err) => console.log(err))
+    : user
+        .update({
+          where: {
+            id: parseInt(id),
+          },
+          data: {
+            pseudo,
+          },
+        })
+        .then(() => res.status(201).json({ message: 'Utilisateur modifer' }))
+        .catch((err) => res.status(400).json({ err }));
 };
 
 module.exports.deleteUser = (req, res) => {
   const { id } = req.params;
 
-  const deletePost = prisma.Post.deleteMany({
+  const deletePost = post.deleteMany({
     where: {
-      userId: parseInt(id)
-    }
-  })
+      userId: parseInt(id),
+    },
+  });
 
-  const deleteUser = prisma.User.delete({
+  const deleteUser = user.delete({
     where: {
-      id: parseInt(id)
-    }
-  })
+      id: parseInt(id),
+    },
+  });
 
-  prisma.$transaction([deletePost, deleteUser])
+  prisma
+    .$transaction([deletePost, deleteUser])
     .then(() => res.status(201).json({ message: 'Utilisateur supprimer' }))
     .catch((err) => res.status(400).json({ err }));
 };
