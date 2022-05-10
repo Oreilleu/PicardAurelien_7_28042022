@@ -14,7 +14,7 @@ function createToken(id) {
 
 function checkPseudo(pseudo) {
   if (pseudo.length < 3 || pseudo.length > 50) {
-    return false;
+    return res.send({ message: 'pseudo incorrect' });
   } else {
     return true;
   }
@@ -22,7 +22,7 @@ function checkPseudo(pseudo) {
 
 function checkPassword(password) {
   if (password.length < 6) {
-    return false;
+    return res.send({ message: 'mot de passe trop court' });
   } else {
     return true;
   }
@@ -35,43 +35,25 @@ module.exports.signUp = (req, res) => {
   // if (pseudo.length < 3 || pseudo > 50) true;
   // else throw Error('Invalid pseudo');
 
-  try {
-    if (isEmail(email) && checkPseudo(pseudo) && checkPassword(password)) {
-      console.log(isEmail(email), checkPseudo(pseudo));
-      bcrypt.hash(password, 10).then((hash) => {
-        const data = { pseudo, email, password: hash };
+  if (!isEmail(email)) return res.send({ message: 'email incorrect' });
+  if (!checkPseudo(pseudo)) return res.send({ message: 'pseudo incorrect' });
+  if (!checkPassword(password))
+    return res.send({ message: 'password incorrect' });
 
-        user
-          .create({ data })
-          .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
-          .catch((err) => res.status(400).json({ err }));
+  bcrypt.hash(password, 10).then((hash) => {
+    const data = { pseudo, email, password: hash };
+
+    user
+      .create({ data })
+      .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
+      .catch((err) => {
+        // console.log(err);
+        if (err.meta.target.includes('pseudo'))
+          res.send({ message: 'pseudo déja pris' });
+        else if (err.meta.target.includes('email'))
+          res.send({ message: 'email déja pris' });
       });
-    } else {
-      // if (!isEmail(email) && !checkPseudo(pseudo) && !checkPassword(password)) {
-      //   throw Error('invalid email and pseudo and password');
-      // }
-      if (!isEmail(email)) {
-        throw Error('invalid email');
-      }
-      if (!checkPseudo(pseudo)) {
-        throw Error('invalid pseudo');
-      }
-      if (!checkPassword(password)) {
-        throw Error('invalid password');
-      }
-    }
-  } catch (err) {
-    const errors = signUpErrors(err);
-    res.send({ errors });
-  }
-
-  // if (pseudo.length < 3) {
-  //   throw Error;
-  // } else {
-  //   console.log('false');
-  // }
-
-  // if (!isEmail(email)) console.log(isEmail.error);
+  });
 };
 
 module.exports.signIn = (req, res) => {
@@ -103,5 +85,5 @@ module.exports.signIn = (req, res) => {
           res.status(400).json({ message: "L'utilisateur n'existe pas" + err })
         );
     })
-    .catch(() => res.status(400).json({ error: 'Email incorrect' }));
+    .catch(() => res.status(400).json({ error: 'Email inconnu' }));
 };
