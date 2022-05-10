@@ -20,10 +20,10 @@ Use Ctrl+C in the terminal to stop the local server.
 
 # Projet 6 de la formation développeur web d'Openclassrooms : Créez un réseau social d’entreprise #
 
--Authentifier un utilisateur et maintenir sa session
--Gérer un stockage de données à l'aide de SQL
--Implémenter un stockage de données sécurisé en utilisant SQL
--Personnaliser le contenu envoyé à un client web
+- Authentifier un utilisateur et maintenir sa session
+- Gérer un stockage de données à l'aide de SQL
+- Implémenter un stockage de données sécurisé en utilisant SQL
+- Personnaliser le contenu envoyé à un client web
 
 # Scénario : #
 
