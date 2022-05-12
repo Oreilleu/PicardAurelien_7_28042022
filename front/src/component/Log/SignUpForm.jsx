@@ -12,7 +12,7 @@ export default function SignUpForm() {
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}/api/user/register`,
-      // withCredentials: true,
+      withCredentials: true,
       data: {
         pseudo,
         email,
