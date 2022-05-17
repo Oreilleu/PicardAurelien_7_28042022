@@ -7,6 +7,9 @@ export default function SignUpForm() {
   const [password, setPassword] = useState('')
   // console.log(pseudo, email, password)
 
+  const showError = document.querySelector('.error')
+
+
   const handleRegister = (e) => {
     e.preventDefault()
     axios({
@@ -16,11 +19,14 @@ export default function SignUpForm() {
       data: {
         pseudo,
         email,
-        password,
+        password
       },
     })
-      .then((result) => {
-        console.log(result)
+      .then((res) => {
+        if(res.data.status === 400) {
+          console.log('true')
+          showError.innerHTML = res.data.message
+        }
       })
       .catch(err => {
         console.log(err)
@@ -32,17 +38,19 @@ export default function SignUpForm() {
       <label htmlFor="pseudo">Pseudo</label>
       <br />
       <input type="text" name='pseudo' id='pseudo' onChange={(e) => setPseudo(e.target.value)} value={pseudo} />
-      <div className="pseudo error"></div>
+      <br />
       <br />
       <label htmlFor="email">Email</label>
       <br />
       <input type="email" name='email' id='email' onChange={(e) => setEmail(e.target.value)} value={email} />
-      <div className="email error"></div>
+      <br />
       <br />
       <label htmlFor="password">Mot de passe</label>
       <br />
       <input type="password" name='password' id='password' onChange={(e) => setPassword(e.target.value)} value={password} />
-      <div className="password error"></div>
+      <br />
+      <br />
+      <div className="error"></div>
       <br />
       <input type="submit" value="Valider inscription" />
     </form>

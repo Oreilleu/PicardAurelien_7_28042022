@@ -8,7 +8,7 @@ const path = require('path');
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: 'http://localhost:3000',
   credentials: true,
   allowedHeaders: ['sessionsId', 'Content-Type'],
   exposedHeaders: ['sessionId'],

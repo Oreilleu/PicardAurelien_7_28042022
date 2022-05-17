@@ -12,33 +12,36 @@ function createToken(id) {
   });
 }
 
-function checkPseudo(pseudo) {
-  if (pseudo.length < 3 || pseudo.length > 50) {
-    return res.send({ message: 'pseudo incorrect' });
-  } else {
-    return true;
-  }
-}
-
-function checkPassword(password) {
-  if (password.length < 6) {
-    return res.send({ message: 'mot de passe trop court' });
-  } else {
-    return true;
-  }
-}
-
 module.exports.signUp = (req, res) => {
   const { pseudo, email, password } = req.body;
 
-  // checkPseudo;
-  // if (pseudo.length < 3 || pseudo > 50) true;
-  // else throw Error('Invalid pseudo');
+  // Sometimes strange error when i put a lots of same carac
+  // Try to make again
+  function checkPseudo(pseudo) {
+    if (pseudo.length < 3 || pseudo.length > 50) {
+      return res.status(400).json({
+        message: 'Le doit être supèrieur à 3 et infèrieur à 50 caractères',
+      });
+    } else {
+      return true;
+    }
+  }
 
-  if (!isEmail(email)) return res.send({ message: 'email incorrect' });
-  if (!checkPseudo(pseudo)) return res.send({ message: 'pseudo incorrect' });
-  if (!checkPassword(password))
-    return res.send({ message: 'password incorrect' });
+  function checkPassword(password) {
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: 'Le mot de passe doit être supèrieur à 6 caractères',
+      });
+    } else {
+      return true;
+    }
+  }
+
+  if (!isEmail(email))
+    return res.status(400).json({ message: "L'email est incorrect" });
+
+  checkPseudo(pseudo);
+  checkPassword(password);
 
   bcrypt.hash(password, 10).then((hash) => {
     const data = { pseudo, email, password: hash };
@@ -47,11 +50,11 @@ module.exports.signUp = (req, res) => {
       .create({ data })
       .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
       .catch((err) => {
-        // console.log(err);
         if (err.meta.target.includes('pseudo'))
-          res.send({ message: 'pseudo déja pris' });
-        else if (err.meta.target.includes('email'))
-          res.send({ message: 'email déja pris' });
+          return res.status(400).json({ message: 'Le pseudo est déja pris' });
+
+        if (err.meta.target.includes('email'))
+          return res.status(400).json({ message: "L'email est déja pris" });
       });
   });
 };
