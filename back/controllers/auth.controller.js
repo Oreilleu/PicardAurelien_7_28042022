@@ -31,7 +31,7 @@ function checkPassword(password) {
 module.exports.signUp = (req, res) => {
   const { pseudo, email, password } = req.body;
 
-  checkPseudo;
+  // checkPseudo;
   // if (pseudo.length < 3 || pseudo > 50) true;
   // else throw Error('Invalid pseudo');
 
