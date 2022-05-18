@@ -12,44 +12,60 @@ function createToken(id) {
   });
 }
 
+function isPseudo(pseudo) {
+  if (pseudo.length < 3 || pseudo.length > 50) {
+    return false
+  } else {
+    return true;
+  }
+}
+
+function isPassword(password) {
+  if (password.length < 6) {
+    return false
+  } else {
+    return true;
+  }
+}
+
 module.exports.signUp = (req, res) => {
   const { pseudo, email, password } = req.body;
 
-  // Sometimes strange error when i put a lots of same carac
-  // Try to make again
-  function checkPseudo(pseudo) {
-    if (pseudo.length < 3 || pseudo.length > 50) {
-      return res.status(400).json({
-        message: 'Le doit être supèrieur à 3 et infèrieur à 50 caractères',
-      });
-    } else {
-      return true;
-    }
-  }
+  if (!isPseudo(pseudo))
+    return res.status(400).json({ message: 'Le pseudo doit être supèrieur à 3 et infèrieur à 50 caractère' })
 
-  function checkPassword(password) {
-    if (password.length < 6) {
-      return res.status(400).json({
-        message: 'Le mot de passe doit être supèrieur à 6 caractères',
-      });
-    } else {
-      return true;
-    }
-  }
+  if (!isPassword(password))
+    return res.status(400).json({ message: 'Le mot de passe doit être supèrieur à 6 caractère' })
 
   if (!isEmail(email))
     return res.status(400).json({ message: "L'email est incorrect" });
 
-  checkPseudo(pseudo);
-  checkPassword(password);
+
 
   bcrypt.hash(password, 10).then((hash) => {
     const data = { pseudo, email, password: hash };
 
     user
       .create({ data })
-      .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
+      .then(() => {
+
+        // console.log('encore plus chelou' + user)
+
+
+        // if (user.meta.target.includes('pseudo'))
+        //   return res.status(400).json({ message: 'Le pseudo est déja pris' })
+        // if (user.meta.target.includes('email'))
+        //   return res.status(400).json({ message: 'L\'email est déja pris' })
+
+        res.status(201).json({ message: 'Utilisateur créé' })
+
+
+      }
+
+      )
       .catch((err) => {
+        // console.log('chelou' + err)
+        // console.log(err)
         if (err.meta.target.includes('pseudo'))
           return res.status(400).json({ message: 'Le pseudo est déja pris' });
 

@@ -7,11 +7,14 @@ export default function SignUpForm() {
   const [password, setPassword] = useState('')
   // console.log(pseudo, email, password)
 
-  const showError = document.querySelector('.error')
 
 
   const handleRegister = (e) => {
     e.preventDefault()
+    const showMessage = document.querySelector('.error')
+
+    showMessage.innerHTML = ''
+
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}/api/user/register`,
@@ -23,13 +26,15 @@ export default function SignUpForm() {
       },
     })
       .then((res) => {
-        if(res.data.status === 400) {
-          console.log('true')
-          showError.innerHTML = res.data.message
-        }
+        // console.log(res.data.message)
+        showMessage.innerHTML = res.data.message
       })
       .catch(err => {
-        console.log(err)
+        if (err.response.status === 400) {
+          // console.log(err)
+          // console.log(err.response.data.message)
+          showMessage.innerHTML = err.response.data.message
+        }
       })
   }
 
