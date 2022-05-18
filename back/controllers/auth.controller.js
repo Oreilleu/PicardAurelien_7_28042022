@@ -14,7 +14,7 @@ function createToken(id) {
 
 function isPseudo(pseudo) {
   if (pseudo.length < 3 || pseudo.length > 50) {
-    return false
+    return false;
   } else {
     return true;
   }
@@ -22,7 +22,7 @@ function isPseudo(pseudo) {
 
 function isPassword(password) {
   if (password.length < 6) {
-    return false
+    return false;
   } else {
     return true;
   }
@@ -32,10 +32,14 @@ module.exports.signUp = (req, res) => {
   const { pseudo, email, password } = req.body;
 
   if (!isPseudo(pseudo))
-    return res.status(400).json({ message: 'Le pseudo doit être supèrieur à 3 et infèrieur à 50 caractère' })
+    return res.status(400).json({
+      message: 'Le pseudo doit être supèrieur à 3 et infèrieur à 50 caractère',
+    });
 
   if (!isPassword(password))
-    return res.status(400).json({ message: 'Le mot de passe doit être supèrieur à 6 caractère' })
+    return res
+      .status(400)
+      .json({ message: 'Le mot de passe doit être supèrieur à 6 caractère' });
 
   if (!isEmail(email))
     return res.status(400).json({ message: "L'email est incorrect" });
@@ -46,7 +50,7 @@ module.exports.signUp = (req, res) => {
     user
       .create({ data })
       .then(() => {
-        res.status(201).json({ message: 'Compte crée, connectez vous' })
+        res.status(201).json({ message: 'Compte crée, connectez vous' });
       })
       .catch((err) => {
         if (err.meta.target.includes('pseudo'))
@@ -77,10 +81,10 @@ module.exports.signIn = (req, res) => {
 
           //Génère un token si le password est ok et le passe en en header
           const token = createToken(user.id);
-          // res.cookie('jwt', token, { httpOnly: true, expiresIn: '12h' })
+          res.cookie('jwt', token, { httpOnly: true, expiresIn: '12h' });
 
           // Réponse
-          res.status(200).json({ userId: user.id, token });
+          res.status(200).json({ userId: user.id });
         })
         .catch((err) =>
           res.status(400).json({ message: "L'utilisateur n'existe pas" + err })

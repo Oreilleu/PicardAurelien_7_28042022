@@ -20,8 +20,8 @@ export default function Log() {
     <div className="connection-form">
       <div className="from-container">
         <ul>
-          <li onClick={handleModals} id='register'>S'inscrire</li>
-          <li onClick={handleModals} id='login'>Se connecter</li>
+          <li onClick={handleModals} id='register' className={signUpModal ? "active-btn" : null}>S'inscrire</li>
+          <li onClick={handleModals} id='login' className={signInModal ? "active-btn" : null}>Se connecter</li>
         </ul>
         {signUpModal && <SignUpForm />}
         {signInModal && <SignInForm />}

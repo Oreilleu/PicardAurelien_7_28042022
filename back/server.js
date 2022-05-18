@@ -1,10 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user.routes');
 const postRouter = require('./routes/post.routes');
 require('dotenv').config({ path: './config/.env' });
 const path = require('path');
-const { requireAuth } = require('./middleware/auth.middleware');
+const { requireAuth, checkUser } = require('./middleware/auth.middleware');
 
 const app = express();
 
@@ -21,14 +22,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// jwt
+app.get('*', checkUser);
+app.get('/jwtid', requireAuth, (req, res) => {
+  res.status(200).json(res.locals.user.id);
+});
 
 // routes
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
-// app.get('/jwtid', requireAuth, (req, res) => {
-//   res.status(200).send(res.locals)
-// })
 
 // server
 app.listen(process.env.PORT, () => {

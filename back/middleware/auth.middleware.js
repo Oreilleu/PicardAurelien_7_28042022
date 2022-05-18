@@ -1,35 +1,41 @@
 const jwt = require('jsonwebtoken');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 module.exports.checkUser = (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodeToken = jwt.verify(token, process.env.JWT_KEY_TOKEN);
-    const userId = decodeToken.id;
-    // console.log(userId);
-    // console.log(req.body.userId);
-    if (req.body.userId && req.body.userId !== userId) {
-      throw res.status(403).json({ message: 'unauthorized request 1' });
-    } else {
-      next();
-    }
-  } catch (err) {
-    res.status(403).json({ message: 'unauthorized request 2' });
+  console.log(req.cookies.jwt);
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, process.env.JWT_KEY_TOKEN, async (err, decodedToken) => {
+      if (err) {
+        res.locals.user = null;
+        res.cookie('jwt', '', { expiresIn: 1 });
+      } else {
+        let user = await prisma.user.findUnique({
+          where: { id: decodedToken.id },
+        });
+        res.locals.user = user;
+        next();
+      }
+    });
+  } else {
+    res.locals.user = null;
+    next();
   }
 };
 
 module.exports.requireAuth = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];
+  const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.JWT_KEY_TOKEN, async (err, decodedToken) => {
       if (err) {
-        console.log(err)
-        res.send(200).json('no token')
+        console.log(err);
       } else {
-        console.log(decodedToken.id)
-        next()
+        console.log(decodedToken.id);
+        next();
       }
-    })
+    });
   } else {
-    console.log('No token')
+    console.log('No token');
   }
-}
+};
