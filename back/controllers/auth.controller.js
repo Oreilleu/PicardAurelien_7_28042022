@@ -40,32 +40,15 @@ module.exports.signUp = (req, res) => {
   if (!isEmail(email))
     return res.status(400).json({ message: "L'email est incorrect" });
 
-
-
   bcrypt.hash(password, 10).then((hash) => {
     const data = { pseudo, email, password: hash };
 
     user
       .create({ data })
       .then(() => {
-
-        // console.log('encore plus chelou' + user)
-
-
-        // if (user.meta.target.includes('pseudo'))
-        //   return res.status(400).json({ message: 'Le pseudo est déja pris' })
-        // if (user.meta.target.includes('email'))
-        //   return res.status(400).json({ message: 'L\'email est déja pris' })
-
-        res.status(201).json({ message: 'Utilisateur créé' })
-
-
-      }
-
-      )
+        res.status(201).json({ message: 'Compte crée, connectez vous' })
+      })
       .catch((err) => {
-        // console.log('chelou' + err)
-        // console.log(err)
         if (err.meta.target.includes('pseudo'))
           return res.status(400).json({ message: 'Le pseudo est déja pris' });
 
@@ -85,7 +68,6 @@ module.exports.signIn = (req, res) => {
       },
     })
     .then((user) => {
-      console.log(user);
       bcrypt
         .compare(password, user.password)
         .then((controlPassword) => {
@@ -93,7 +75,7 @@ module.exports.signIn = (req, res) => {
             return res.status(401).json({ error: 'Mot de passe incorrect' });
           }
 
-          //Génère un token si le password est ok et le passe en cookie
+          //Génère un token si le password est ok et le passe en en header
           const token = createToken(user.id);
           // res.cookie('jwt', token, { httpOnly: true, expiresIn: '12h' })
 

@@ -4,6 +4,7 @@ const userRouter = require('./routes/user.routes');
 const postRouter = require('./routes/post.routes');
 require('dotenv').config({ path: './config/.env' });
 const path = require('path');
+const { requireAuth } = require('./middleware/auth.middleware');
 
 const app = express();
 
@@ -25,6 +26,9 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 // routes
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
+// app.get('/jwtid', requireAuth, (req, res) => {
+//   res.status(200).send(res.locals)
+// })
 
 // server
 app.listen(process.env.PORT, () => {

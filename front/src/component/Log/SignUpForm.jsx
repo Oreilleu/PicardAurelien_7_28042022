@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import SignInForm from './SignInForm'
 
 export default function SignUpForm() {
+  const [formSubmit, setFormSubmit] = useState(false)
   const [pseudo, setPseudo] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,7 +29,8 @@ export default function SignUpForm() {
     })
       .then((res) => {
         // console.log(res.data.message)
-        showMessage.innerHTML = res.data.message
+        setFormSubmit(true)
+
       })
       .catch(err => {
         if (err.response.status === 400) {
@@ -39,25 +42,31 @@ export default function SignUpForm() {
   }
 
   return (
-    <form onSubmit={handleRegister}>
-      <label htmlFor="pseudo">Pseudo</label>
-      <br />
-      <input type="text" name='pseudo' id='pseudo' onChange={(e) => setPseudo(e.target.value)} value={pseudo} />
-      <br />
-      <br />
-      <label htmlFor="email">Email</label>
-      <br />
-      <input type="email" name='email' id='email' onChange={(e) => setEmail(e.target.value)} value={email} />
-      <br />
-      <br />
-      <label htmlFor="password">Mot de passe</label>
-      <br />
-      <input type="password" name='password' id='password' onChange={(e) => setPassword(e.target.value)} value={password} />
-      <br />
-      <br />
-      <div className="error"></div>
-      <br />
-      <input type="submit" value="Valider inscription" />
-    </form>
+    <>
+      {formSubmit ? (<>
+        <SignInForm />
+        <h4>Le compte a bien été enregistré, connectez vous</h4>
+      </>) : (<form onSubmit={handleRegister}>
+        <label htmlFor="pseudo">Pseudo</label>
+        <br />
+        <input type="text" name='pseudo' id='pseudo' onChange={(e) => setPseudo(e.target.value)} value={pseudo} />
+        <br />
+        <br />
+        <label htmlFor="email">Email</label>
+        <br />
+        <input type="email" name='email' id='email' onChange={(e) => setEmail(e.target.value)} value={email} />
+        <br />
+        <br />
+        <label htmlFor="password">Mot de passe</label>
+        <br />
+        <input type="password" name='password' id='password' onChange={(e) => setPassword(e.target.value)} value={password} />
+        <br />
+        <br />
+        <div className="error"></div>
+        <br />
+        <input type="submit" value="Valider inscription" />
+      </form>)
+      }
+    </>
   )
 }
