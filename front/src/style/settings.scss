@@ -4,3 +4,10 @@
 $color-1: #ffd7d7;
 $color-2: #fd2d01;
 $color-4: #fdeeee;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+}

@@ -7,10 +7,12 @@ import {
 // import Home from '../../page/Home';
 import Profil from '../../page/Profil';
 import Trending from '../../page/Trending';
+import Navbar from '../Navbar';
 
 export default function index() {
   return (
     <Router>
+      <Navbar />
       <Switch>
         {/* <Route path="/" exact component={Home}></Route> */}
         <Route path="/" exact component={Profil}></Route>
