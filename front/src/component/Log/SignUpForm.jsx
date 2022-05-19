@@ -13,7 +13,7 @@ export default function SignUpForm() {
 
   const handleRegister = (e) => {
     e.preventDefault()
-    const showMessage = document.querySelector('.error')
+    const showMessage = document.querySelector('.errorFormSignUp')
 
     showMessage.innerHTML = ''
 
@@ -45,7 +45,7 @@ export default function SignUpForm() {
     <>
       {formSubmit ? (<>
         <SignInForm />
-        <h4>Le compte a bien été enregistré, connectez vous</h4>
+        <h4 className='validAccount'>Le compte a bien été enregistré, connectez vous</h4>
       </>) : (<form onSubmit={handleRegister}>
         <label htmlFor="pseudo">Pseudo</label>
         <br />
@@ -62,9 +62,9 @@ export default function SignUpForm() {
         <input type="password" name='password' id='password' onChange={(e) => setPassword(e.target.value)} value={password} />
         <br />
         <br />
-        <div className="error"></div>
+        <div className="errorFormSignUp"></div>
         <br />
-        <input type="submit" value="Valider inscription" />
+        <input type="submit" value="Valider inscription" className='submitSignUp' />
       </form>)
       }
     </>

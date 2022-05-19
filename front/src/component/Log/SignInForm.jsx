@@ -47,7 +47,7 @@ export default function SignInForm() {
       <br />
       <div className="error"></div>
       <br />
-      <input type="submit" value="Se connecter" />
+      <input type="submit" value="Se connecter" className='submitSignUp' />
     </form>
   )
 }
