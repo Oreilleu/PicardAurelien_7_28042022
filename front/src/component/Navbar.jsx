@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { UidContext } from "./Appcontext"
+import Logout from "./Log/Logout";
 
 export default function Navbar() {
     // Mettre variable context
+    const userId = useContext(UidContext)
 
     // Faire variable UserId
     // Faire le ternaire savoir si uid est co
@@ -11,17 +14,36 @@ export default function Navbar() {
     // si il est co afficher bonjour + nom et un bouton deconecter
     // si est pas co ne rien afficher logo au center
     return (
-        <div className="navbar-container">
-            <NavLink exact to="/">
-                <div className="logo">
-                    <img src="./img/icon-left-font.png" alt="logo groupomania" />
-                </div>
-            </NavLink>
-            <div className="account">
-                Gestion du compte
+        <div className="nav-container">
+            <div className="logo-container">
+                <NavLink exact to="/">
+                    <div className="logo">
+                        <img src="./img/icon-left-font.png" alt="logo groupomania" />
+                    </div>
+                </NavLink>
             </div>
-            <div className="coonect">
-                Se déconnecter
+            <div className="hello-container">
+                {
+                    userId ? (<ul className="ul-hello">
+                        <li className="li-hello">
+                            <NavLink exact to="/">
+                                <h3>Bonjour NOM UTILISATEUR</h3>
+                            </NavLink>
+                        </li>
+                        <li className="li-hello">
+                            <ul>
+                                <li>COMPTE</li>
+                                <Logout />
+                            </ul>
+                        </li>
+                    </ul>) : (
+                        <div className="login">
+                            <NavLink exact to='/'>
+                                <h3>Se connecter</h3>
+                            </NavLink>
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

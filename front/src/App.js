@@ -18,7 +18,7 @@ export default function App() {
         setUserId(res.data);
       })
       .catch((err) => console.log('No token'));
-  }, [userId]);
+  }, []);
 
   return (
     <UidContext.Provider value={userId}>

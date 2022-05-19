@@ -1,0 +1,30 @@
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px solid $color-1;
+  // background: blue;
+
+
+  .logo-container {
+    position: relative;
+    top: 3px;
+  }
+
+  .hello-container {
+    width: 30%;
+    height: 100%;
+  }
+
+  .ul-hello {
+    display: flex;
+    align-items: center;
+    padding-top: 8px;
+
+    .li-hello {
+      margin: auto;
+    }
+  }
+}

@@ -92,3 +92,8 @@ module.exports.signIn = (req, res) => {
     })
     .catch(() => res.status(400).json({ error: 'Email inconnu' }));
 };
+
+module.exports.logout = (req, res) => {
+  res.cookie('jwt', '', { expiresIn: 1 });
+  res.redirect('/');
+};
