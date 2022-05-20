@@ -5,8 +5,12 @@
   width: 100%;
   height: 50px;
   border-bottom: 2px solid $color-1;
-  // background: blue;
 
+  @media screen and(max-width: 750px) {
+    flex-direction: column;
+    height: 100px;
+    // background-color: aqua;
+  }
 
   .logo-container {
     position: relative;
@@ -16,6 +20,10 @@
   .hello-container {
     width: 30%;
     height: 100%;
+
+    @media screen and(max-width: 750px) {
+      width: 100%;
+    }
   }
 
   .ul-hello {
@@ -24,7 +32,31 @@
     padding-top: 8px;
 
     .li-hello {
+      font-weight: 600;
       margin: auto;
+      text-align: center;
+
+      @media screen and(max-width: 750px) {
+        width: 50%;
+      }
+    }
+
+    // Concerne le logout et profil
+    ul {
+      @media screen and(max-width: 750px) {
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+  }
+
+  .logout-account {
+    transform: scale(1);
+    transition: 0.3s;
+
+    &:hover {
+      text-align: center;
+      transform: scale(1.1);
     }
   }
 }

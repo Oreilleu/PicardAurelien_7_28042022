@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { UidContext } from "./Appcontext"
 import Logout from "./Log/Logout";
+import EditProfil from "./EditProfil";
 
 export default function Navbar() {
     // Mettre variable context
     const userId = useContext(UidContext)
+    const userData = useSelector((state) => state.userReducer)
 
-    // Faire variable UserId
-    // Faire le ternaire savoir si uid est co
 
-    // Recup userId voir si l'uitilisateur est connecter
     // si il est co afficher bonjour + nom et un bouton deconecter
     // si est pas co ne rien afficher logo au center
     return (
@@ -27,22 +27,16 @@ export default function Navbar() {
                     userId ? (<ul className="ul-hello">
                         <li className="li-hello">
                             <NavLink exact to="/">
-                                <h3>Bonjour NOM UTILISATEUR</h3>
+                                <h3>Bonjour {userData.pseudo}</h3>
                             </NavLink>
                         </li>
                         <li className="li-hello">
                             <ul>
-                                <li>COMPTE</li>
+                                <li className="logout-account" onClick={EditProfil}>PROFIL</li>
                                 <Logout />
                             </ul>
                         </li>
-                    </ul>) : (
-                        <div className="login">
-                            <NavLink exact to='/'>
-                                <h3>Se connecter</h3>
-                            </NavLink>
-                        </div>
-                    )
+                    </ul>) : null
                 }
             </div>
         </div>

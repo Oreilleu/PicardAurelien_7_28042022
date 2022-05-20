@@ -20,7 +20,7 @@ module.exports.getOneUser = (req, res) => {
     })
     .then((user) =>
       user
-        ? res.status(200).json({ user })
+        ? res.status(200).json(user)
         : res.status(404).json({ message: `L'utilisateur n'existe pas ${id}` })
     )
     .catch((err) => res.status(500).json({ err }));

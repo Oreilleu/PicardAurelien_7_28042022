@@ -9,7 +9,7 @@ module.exports.checkUser = (req, res, next) => {
     jwt.verify(token, process.env.JWT_KEY_TOKEN, async (err, decodedToken) => {
       if (err) {
         res.locals.user = null;
-        res.cookie('jwt', '', { expiresIn: 1 });
+        res.cookie('jwt', '', { maxAge: 1 });
       } else {
         let user = await prisma.user.findUnique({
           where: { id: decodedToken.id },

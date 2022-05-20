@@ -5,11 +5,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { isEmail } = require('validator');
 const { signUpErrors } = require('../utils/error.utils');
+const maxAge = 1 * 24 * 60 * 60 * 1000;
 
 function createToken(id) {
-  return jwt.sign({ id }, process.env.JWT_KEY_TOKEN, {
-    expiresIn: '12h',
-  });
+  return jwt.sign({ id }, process.env.JWT_KEY_TOKEN, { expiresIn: maxAge });
 }
 
 function isPseudo(pseudo) {
@@ -81,7 +80,7 @@ module.exports.signIn = (req, res) => {
 
           //Génère un token si le password est ok et le passe en en header
           const token = createToken(user.id);
-          res.cookie('jwt', token, { httpOnly: true, expiresIn: '12h' });
+          res.cookie('jwt', token, { httpOnly: true, maxAge });
 
           // Réponse
           res.status(200).json({ userId: user.id });
@@ -94,6 +93,6 @@ module.exports.signIn = (req, res) => {
 };
 
 module.exports.logout = (req, res) => {
-  res.cookie('jwt', '', { expiresIn: 1 });
+  res.cookie('jwt', '', { maxAge: 1 });
   res.redirect('/');
 };

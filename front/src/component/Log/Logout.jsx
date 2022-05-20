@@ -18,11 +18,13 @@ export default function Logout() {
     })
       .then(() => removeCookies('jwt'))
       .catch(err => console.log(err))
+
+    window.location = '/'
   }
 
   return (
-    <li onClick={logout}>
-      Logout
+    <li onClick={logout} className='logout-account'>
+      LOGOUT
     </li>
   )
 }
