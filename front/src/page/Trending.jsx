@@ -1,7 +1,11 @@
 import React from 'react'
+import Profil from '../component/Profil'
 
 export default function Trending() {
+  // console.log(isProfil)
   return (
-    <div>From Trending</div>
+    <div className="profil">
+      <Profil />
+    </div>
   )
 }

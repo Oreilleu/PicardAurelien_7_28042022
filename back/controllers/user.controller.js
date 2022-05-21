@@ -28,14 +28,12 @@ module.exports.getOneUser = (req, res) => {
 
 module.exports.updateUser = (req, res) => {
   const { id } = req.params;
-  // const { pseudo, picture } = req.body;
-
-  const data = JSON.parse(req.body.data);
+  const { pseudo, picture } = req.body;
+  // const data = JSON.parse(req.body.data);
   // console.log(data);
 
-  const pseudo = data.pseudo;
+  // File ne passe pas, picture est une string
 
-  // Modifie que l'imaage
   req.file
     ? user
         .update({
@@ -62,7 +60,7 @@ module.exports.updateUser = (req, res) => {
             pseudo,
           },
         })
-        .then(() => res.status(201).json({ message: 'Utilisateur modifer' }))
+        .then(() => res.status(201).json({ message: 'Utilisateur modifer &' }))
         .catch((err) => res.status(400).json({ err }));
 };
 
