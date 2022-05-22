@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const postCtrl = require('../controllers/post.controller');
-const multer = require('../middleware/multer-config');
+// const multer = require('../middleware/multer-config');
 
 // CRUD post
-router.post('/', multer, postCtrl.createPost);
+router.post('/', postCtrl.createPost);
 router.get('/', postCtrl.getAllPost);
 router.get('/:id', postCtrl.getOnePost);
-router.put('/:id', multer, postCtrl.updatePost);
+router.put('/:id', postCtrl.updatePost);
 router.delete('/:id', postCtrl.deletePost);
 
 // Likes

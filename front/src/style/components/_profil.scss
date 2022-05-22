@@ -28,7 +28,7 @@
     }
 
     form {
-        height: 50%;
+        height: 30%;
         // background-color: azure;
         display: flex;
         flex-direction: column;
@@ -47,20 +47,28 @@
 
         }
 
-        .submitBtn {
-            border: none;
-            border-radius: 10px;
-            width: 100%;
-            height: 25px;
-            background-color: $color-2;
-            transform: scale(1);
-            transition: 0.2s;
-            font-size: 1em;
 
-            &:hover {
-                transform: scale(1.1);
+    }
 
-            }
+    .submitBtn,
+    .submitBtnDelete {
+        border: none;
+        border-radius: 10px;
+        width: 100%;
+        height: 25px;
+        background-color: $color-2;
+        transform: scale(1);
+        transition: 0.2s;
+        font-size: 1em;
+
+        &:hover {
+            transform: scale(1.1);
+
         }
     }
+
+    .submitBtnDelete {
+        width: 70%;
+    }
+
 }
