@@ -12,49 +12,48 @@ module.exports.createPost = async (req, res) => {
 
   req.file
     ? post
-        .create({
-          data: {
-            ...data,
-            userId,
-            User: {
-              connect: {
-                id: data.userId,
-              },
+      .create({
+        data: {
+          ...data,
+          userId,
+          User: {
+            connect: {
+              id: data.userId,
             },
           },
-        })
-        .then((post) =>
-          image
-            .create({
-              data: {
-                image: `${req.protocol}://${req.get('host')}/images/${
-                  req.file.filename
+        },
+      })
+      .then((post) =>
+        image
+          .create({
+            data: {
+              image: `${req.protocol}://${req.get('host')}/images/${req.file.filename
                 }`,
-                Post: {
-                  connect: {
-                    id: JSON.parse(post.id),
-                  },
+              Post: {
+                connect: {
+                  id: JSON.parse(post.id),
                 },
               },
-            })
-            .then((post) => res.send({ post }))
-            .catch((err) => res.send({ err }))
-        )
-        .catch((err) => res.send({ err }))
+            },
+          })
+          .then((post) => res.send({ post }))
+          .catch((err) => res.send({ err }))
+      )
+      .catch((err) => res.send({ err }))
     : post
-        .create({
-          data: {
-            ...data,
-            userId,
-            User: {
-              connect: {
-                id: data.userId,
-              },
+      .create({
+        data: {
+          ...data,
+          userId,
+          User: {
+            connect: {
+              id: data.userId,
             },
           },
-        })
-        .then((post) => res.status(200).json(post))
-        .catch((err) => res.status(400).json({ err }));
+        },
+      })
+      .then((post) => res.status(200).json(post))
+      .catch((err) => res.status(400).json({ err }));
 };
 
 module.exports.getAllPost = (req, res) => {
@@ -86,43 +85,42 @@ module.exports.updatePost = (req, res) => {
 
   req.file
     ? prisma.Post.update({
-        where: {
-          id: parseInt(id),
-        },
-        data: {
-          ...data,
-        },
-      })
-        .then((post) => {
-          console.log(post);
-          console.log(id);
-          image
-            .updateMany({
-              where: {
-                postId: JSON.parse(id),
-              },
-              data: {
-                image: `${req.protocol}://${req.get('host')}/images/${
-                  req.file.filename
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        ...data,
+      },
+    })
+      .then((post) => {
+        console.log(post);
+        console.log(id);
+        image
+          .updateMany({
+            where: {
+              postId: JSON.parse(id),
+            },
+            data: {
+              image: `${req.protocol}://${req.get('host')}/images/${req.file.filename
                 }`,
-              },
-            })
-            .then((post) =>
-              res.status(201).json({ message: 'post modifié', post })
-            )
-            .catch((err) => console.log(err));
-        })
-        .catch((err) => res.status(400).json({ err }))
-    : prisma.Post.update({
-        where: {
-          id: parseInt(id),
-        },
-        data: {
-          ...data,
-        },
+            },
+          })
+          .then((post) =>
+            res.status(201).json({ message: 'post modifié', post })
+          )
+          .catch((err) => console.log(err));
       })
-        .then((post) => res.status(201).json({ message: 'Post modifié', post }))
-        .catch((err) => res.status(400).json({ err }));
+      .catch((err) => res.status(400).json({ err }))
+    : prisma.Post.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        ...data,
+      },
+    })
+      .then((post) => res.status(201).json({ message: 'Post modifié', post }))
+      .catch((err) => res.status(400).json({ err }));
 };
 
 module.exports.deletePost = (req, res) => {
@@ -196,48 +194,47 @@ module.exports.commentPost = (req, res) => {
 
   req.file
     ? comments
-        .create({
-          data: {
-            userId,
-            message,
-            picture: `${req.protocol}://${req.get('host')}/images/${
-              req.file.filename
+      .create({
+        data: {
+          userId,
+          message,
+          picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename
             }`,
-            Post: {
-              connect: {
-                id: parseInt(id),
-              },
-            },
-            User: {
-              connect: {
-                id: parseInt(userId),
-              },
+          Post: {
+            connect: {
+              id: parseInt(id),
             },
           },
-        })
-        .then(() => {
-          res.status(201).json({ message: 'post créer' });
-        })
-        .catch((err) => res.status(400).json({ err }))
+          User: {
+            connect: {
+              id: parseInt(userId),
+            },
+          },
+        },
+      })
+      .then(() => {
+        res.status(201).json({ message: 'post créer' });
+      })
+      .catch((err) => res.status(400).json({ err }))
     : comments
-        .create({
-          data: {
-            userId,
-            message,
-            Post: {
-              connect: {
-                id: parseInt(id),
-              },
-            },
-            User: {
-              connect: {
-                id: userId,
-              },
+      .create({
+        data: {
+          userId,
+          message,
+          Post: {
+            connect: {
+              id: parseInt(id),
             },
           },
-        })
-        .then(() => res.status(200).json({ message: 'post créer' }))
-        .catch((err) => console.log(err));
+          User: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      })
+      .then(() => res.status(200).json({ message: 'post créer' }))
+      .catch((err) => console.log(err));
 };
 
 module.exports.updateCommentPost = (req, res) => {
