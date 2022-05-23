@@ -7,7 +7,7 @@ module.exports.getAllUser = (req, res) => {
   //   console.log(req.body);
   user
     .findMany({})
-    .then((user) => res.status(200).json({ user }))
+    .then((user) => res.status(200).json(user))
     .catch((err) => res.status(400).json({ err }));
 };
 

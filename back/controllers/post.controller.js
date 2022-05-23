@@ -5,8 +5,8 @@ const { post, like, comments, image } = prisma;
 module.exports.createPost = async (req, res) => {
   // Gif ca passe dans image ?
   const { id } = req.params;
-  const { userId } = req.body;
-  const data = JSON.parse(req.body.data);
+  const { userId, message } = req.body;
+  // const data = JSON.parse(req.body.data);
 
   // Bonne utilisation de form data : postman + code ???
 
@@ -14,11 +14,11 @@ module.exports.createPost = async (req, res) => {
     ? post
       .create({
         data: {
-          ...data,
           userId,
+          message,
           User: {
             connect: {
-              id: data.userId,
+              id: userId,
             },
           },
         },
@@ -43,22 +43,22 @@ module.exports.createPost = async (req, res) => {
     : post
       .create({
         data: {
-          ...data,
-          userId,
+          message,
           User: {
             connect: {
-              id: data.userId,
+              id: userId,
             },
           },
         },
       })
       .then((post) => res.status(200).json(post))
-      .catch((err) => res.status(400).json({ err }));
+      .catch((err) => {console.log(err)
+        res.status(400).json({ err })});
 };
 
 module.exports.getAllPost = (req, res) => {
   prisma.Post.findMany({})
-    .then((post) => res.status(200).json({ post }))
+    .then((post) => res.status(200).json(post))
     .catch((err) => res.status(400).json({ err }));
 };
 

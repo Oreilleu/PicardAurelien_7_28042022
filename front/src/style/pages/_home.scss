@@ -1,0 +1,29 @@
+.profil-page {
+  margin: 80px auto 0;
+  max-width: 1200px;
+
+  .log-container {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 60% 40%;
+
+    @media screen and(max-width: 885px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .img-container {
+    display: grid;
+    height: 100%;
+
+    img {
+      height: 480px;
+      margin: auto;
+
+
+      @media screen and(max-width: 650px) {
+        display: none;
+      }
+    }
+  }
+}
