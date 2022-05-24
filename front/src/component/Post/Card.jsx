@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { isEmpty } from '../utils'
 import { dateParser } from '../utils'
+import Comment from '../Post/Comment'
+import axios from 'axios'
+import { UidContext } from '../Appcontext'
 
 export default function Card({ post }) {
     const [isLoading, setIsloading] = useState(true)
@@ -9,9 +12,36 @@ export default function Card({ post }) {
     const allUserData = useSelector(state => state.usersReducer)
     const postData = useSelector(state => state.postReducer)
 
+    const userId = useContext(UidContext)
+    const [commentMessage, setCommentMessage] = useState('')
+
+
+
     useEffect(() => {
         !isEmpty(allUserData) && setIsloading(false)
     }, [allUserData])
+
+    const handleComment = (e) => {
+        e.preventDefault()
+
+        // Vider le formulaire
+
+        const inputComment = document.querySelector('input-comment')
+
+
+
+        axios({
+            method: 'post',
+            url: (`${process.env.REACT_APP_API_URL}/api/post/comment-post/${post.id}`),
+            withCredentials: true,
+            data: {
+                userId: userId,
+                message: commentMessage
+            }
+        })
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+    }
 
     return (
         <li className='card-container' key={post.id}>
@@ -59,22 +89,23 @@ export default function Card({ post }) {
                         <div className="like-comment">
                             {
                                 // SI le post est like mettre unlike
+                                // Au clique sur comment ouvre un input pour le commentaire
                             }
                             <button>Like</button>
-                            <button>Comment</button>
+                            <button onClick={handleComment}>Comment</button>
+                        </div>
+                        <div className="comment-container">
+                            <ul>
+                                <Comment />
+                            </ul>
+                        </div>
+
+                        <div className="input-comment-container">
+                            <input type="text" placeholder='Ecrivez votre commentaire' className='input-comment' onChange={(e) => setCommentMessage(e.target.value)} />
                         </div>
                     </div>
-
-
-
-
-
                 </div>
             )}
-            {/* 
-            <div className="comment-container">
-
-            </div> */}
         </li>
     )
 }

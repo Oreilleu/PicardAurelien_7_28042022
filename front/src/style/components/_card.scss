@@ -25,7 +25,7 @@
 
         .card-right-container {
             width: 100%;
-            border-bottom: 1px solid $color-1;
+            // border-bottom: 1px solid $color-1;
 
 
             .card-name {
@@ -49,6 +49,12 @@
             width: 20%;
             margin: 5px 0;
 
+        }
+
+        .input-comment {
+            width: 98%;
+            height: 30px;
+            border: 1px solid $color-2;
         }
     }
 

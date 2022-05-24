@@ -52,8 +52,10 @@ module.exports.createPost = async (req, res) => {
         },
       })
       .then((post) => res.status(200).json(post))
-      .catch((err) => {console.log(err)
-        res.status(400).json({ err })});
+      .catch((err) => {
+        console.log(err)
+        res.status(400).json({ err })
+      });
 };
 
 module.exports.getAllPost = (req, res) => {
@@ -183,20 +185,28 @@ module.exports.unlikePost = (req, res) => {
 // YAZID - Voir pour afficher l'array des posts coter front
 // YAZID - La je recup l'id du post et pour update et delete l'id du comment ?
 // YAZID - Le token d'authentification est bien dans bearer token avec la tech que j'ai utilisé
+
+// module.exports.getAllComment = (req, res) => {
+//   comments
+//     .findMany({})
+//     .then((comment) => res.status(200).json(comment))
+//     .catch((err) => console.log(err))
+// }
+
 module.exports.commentPost = (req, res) => {
   // YAZID - route update hs je peux pas exploiter les form data
 
   const { id } = req.params;
   const { userId, message } = req.body;
-  const data = JSON.parse(req.body.data);
+  // const data = JSON.parse(req.body.data);
   // const data = JSON.stringify(req.body.data);
-  console.log(data);
+  // console.log(data);
 
   req.file
     ? comments
       .create({
         data: {
-          userId,
+          // userId,
           message,
           picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename
             }`,
@@ -219,7 +229,6 @@ module.exports.commentPost = (req, res) => {
     : comments
       .create({
         data: {
-          userId,
           message,
           Post: {
             connect: {

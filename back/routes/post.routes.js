@@ -14,6 +14,7 @@ router.patch('/like-post/:id', postCtrl.likePost);
 router.patch('/unlike-post/:id', postCtrl.unlikePost);
 
 // Comments -- MULTER A METTRE SUR ADD AND PATCH
+// router.get('/comment', postCtrl.getAllComment)
 router.post('/comment-post/:id', postCtrl.commentPost);
 router.patch('/update-comment-post/:id', postCtrl.updateCommentPost);
 router.patch('/delete-comment-post/:id', postCtrl.deleteCommentPost);
