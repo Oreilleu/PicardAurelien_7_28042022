@@ -25,6 +25,8 @@
 
         .card-right-container {
             width: 100%;
+            border-bottom: 1px solid $color-1;
+
 
             .card-name {
                 display: flex;
@@ -36,7 +38,17 @@
             .card-post {
                 text-align: center;
                 margin-top: 10px;
+                border-bottom: 1px solid $color-1;
+
             }
+        }
+
+        .like-comment {
+            display: flex;
+            justify-content: space-around;
+            width: 20%;
+            margin: 5px 0;
+
         }
     }
 

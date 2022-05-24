@@ -56,11 +56,25 @@ export default function Card({ post }) {
                                 </div>
                             </div>
                         )}
+                        <div className="like-comment">
+                            {
+                                // SI le post est like mettre unlike
+                            }
+                            <button>Like</button>
+                            <button>Comment</button>
+                        </div>
                     </div>
+
+
+
 
 
                 </div>
             )}
+            {/* 
+            <div className="comment-container">
+
+            </div> */}
         </li>
     )
 }

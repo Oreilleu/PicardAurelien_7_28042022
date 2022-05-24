@@ -32,6 +32,5 @@ export default function Trending() {
       }
     </ul>
   </div>
-
   )
 }
