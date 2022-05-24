@@ -13,14 +13,16 @@ import { getAllUsers } from './redux/actions/users.actions';
 
 // Log redux
 import { composeWithDevTools } from 'redux-devtools-extension';
-import logger from 'redux-logger';
+import { getComments, getLike } from './redux/actions/post.actions';
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk, logger))
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 store.dispatch(getAllUsers());
+store.dispatch(getComments());
+store.dispatch(getLike());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
