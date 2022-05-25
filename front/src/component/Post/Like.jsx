@@ -1,18 +1,25 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState, useContext, useId } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { UidContext } from '../Appcontext'
 import axios from 'axios'
+import { getLike } from '../../redux/actions/post.actions'
 
 
 export default function Like({ post }) {
     const [isLike, setIsLike] = useState(false)
     const likeData = useSelector(state => state.postReducer)
     const userId = useContext(UidContext)
+    const dispatch = useDispatch()
 
 
-    // console.log(likeData)
+    // Comment faire le dispatch(getLike) sans le relancer a l'infini
+    console.log(likeData[0].userId)
+
+    // Savoir si le post est dans le tableau des likeData
     useEffect(() => {
-        if (likeData.includes(userId)) setIsLike(true)
+        if (likeData.includes(userId)) console.log("ok")
+        else { console.log('ko') }
+        // setIsLike(true)
 
     }, [userId, likeData, isLike])
 
@@ -29,10 +36,22 @@ export default function Like({ post }) {
             .then((res) => console.log(res))
             .catch((err) => console.log(err))
 
-        setIsLike(false)
+        setIsLike(true)
     }
 
     const handleUnlike = () => {
+        axios({
+            method: 'patch',
+            url: (`${process.env.REACT_APP_API_URL}/api/post/unlike-post/${post.id}`),
+            withCredentials: true,
+            data: {
+                userId: userId
+            }
+        })
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+
+        setIsLike(false)
     }
 
 

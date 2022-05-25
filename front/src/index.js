@@ -20,6 +20,8 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk))
 );
 
+
+
 store.dispatch(getAllUsers());
 store.dispatch(getComments());
 store.dispatch(getLike());
