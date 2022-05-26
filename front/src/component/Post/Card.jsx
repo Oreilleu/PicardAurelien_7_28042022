@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { isEmpty } from '../utils'
 import { dateParser } from '../utils'
-// import { UidContext } from '../Appcontext'
+import { UidContext } from '../Appcontext'
 import Like from './Like'
 import DeletePost from './DeletePost'
 
@@ -10,7 +10,7 @@ export default function Card({ post }) {
     // Data
     const allUserData = useSelector(state => state.usersReducer)
     const postData = useSelector(state => state.postReducer)
-    // const userId = useContext(UidContext)
+    const userId = useContext(UidContext)
 
     // State
     const [isLoading, setIsloading] = useState(true)
@@ -36,10 +36,14 @@ export default function Card({ post }) {
                         <div className="like">
                             <Like post={post} />
                         </div>
-                        <div className="update-post">
-                            <button>Edit</button>
-                            <DeletePost post={post} />
-                        </div>
+                        {
+                            userId === post.userId ? (
+                                <div className="update-post">
+                                    <DeletePost post={post} />
+                                </div>
+                            ) : null
+                        }
+
 
                     </div>
 
@@ -71,6 +75,7 @@ export default function Card({ post }) {
                                     {post.message}
                                 </div>
                             </div>
+                            // Faire remonter isEdit et mettre un formulaire ici
                         )}
                     </div>
                 </div>
