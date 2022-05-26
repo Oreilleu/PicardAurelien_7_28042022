@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { isEmpty } from '../utils'
 import { dateParser } from '../utils'
-import { UidContext } from '../Appcontext'
+// import { UidContext } from '../Appcontext'
 import Like from './Like'
+import DeletePost from './DeletePost'
 
 export default function Card({ post }) {
     // Data
@@ -35,6 +36,11 @@ export default function Card({ post }) {
                         <div className="like">
                             <Like post={post} />
                         </div>
+                        <div className="update-post">
+                            <button>Edit</button>
+                            <DeletePost post={post} />
+                        </div>
+
                     </div>
 
                     <div className="card-right-container">

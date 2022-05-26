@@ -8,8 +8,6 @@ module.exports.createPost = async (req, res) => {
   const { userId, message } = req.body;
   // const data = JSON.parse(req.body.data);
 
-  // Bonne utilisation de form data : postman + code ???
-
   req.file
     ? post
         .create({
@@ -130,13 +128,29 @@ module.exports.updatePost = (req, res) => {
 module.exports.deletePost = (req, res) => {
   const { id } = req.params;
 
-  prisma.Post.delete({
+  // Supprimer les like en premier
+
+  const deleteLike = like.deleteMany({
+    where: {
+      postId: parseInt(id)
+    }
+  })
+
+  const deletePost = post.delete({
     where: {
       id: parseInt(id),
     },
   })
-    .then(() => res.status(201).json({ message: 'Post supprimer' }))
-    .catch((err) => res.status(400).json({ err }));
+
+  prisma
+    .$transaction([deleteLike, deletePost])
+    .then(() => res.status(200).json({message :'message supprimer'}))
+    .catch((err) => console.log(err))
+  
+
+    // .then(() => res.status(201).json({ message: 'Post supprimer' }))
+    // .catch((err) => {console.log(err)
+    //   res.status(400).json({ err })});
 };
 
 module.exports.getLike = (req, res) => {
