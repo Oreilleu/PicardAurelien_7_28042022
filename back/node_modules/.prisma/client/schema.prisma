@@ -12,25 +12,23 @@ datasource db {
 
 // Un user peut avoir plusieurs post mais un post n'a qu'un user
 model User {
-  id       Int        @id @default(autoincrement())
-  pseudo   String     @unique
-  email    String     @unique
+  id       Int     @id @default(autoincrement())
+  pseudo   String  @unique
+  email    String  @unique
   picture  String?
   password String
   posts    Post[]
   like     Like[]
-  comments Comments[]
 }
 
 // Comment rendre video et picture non obligatoire ?
 model Post {
-  id        Int        @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   message   String
   picture   Image[]
-  createdAt DateTime   @default(now())
+  createdAt DateTime @default(now())
   like      Like[]
-  comments  Comments[]
-  User      User?      @relation(fields: [userId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id])
   userId    Int?
 }
 
@@ -42,18 +40,6 @@ model Like {
   userId Int
 
   @@id([postId, userId])
-}
-
-// Table comments
-model Comments {
-  id        Int      @id @default(autoincrement())
-  message   String
-  // picture   Image[]
-  createdAt DateTime @default(now())
-  Post      Post?    @relation(fields: [postId], references: [id])
-  postId    Int?
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
 }
 
 model Image {

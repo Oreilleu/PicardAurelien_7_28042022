@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { post, like, comments, image } = prisma;
+const { post, like, image } = prisma;
 
 module.exports.createPost = async (req, res) => {
   // Gif ca passe dans image ?
@@ -189,100 +189,4 @@ module.exports.unlikePost = (req, res) => {
         : res.status(200).json({ message: 'post unliké' })
     )
     .catch((err) => res.send({ message: 'Post non liké' }));
-};
-
-// YAZID - Voir pour afficher l'array des posts coter front
-// YAZID - La je recup l'id du post et pour update et delete l'id du comment ?
-// YAZID - Le token d'authentification est bien dans bearer token avec la tech que j'ai utilisé
-
-module.exports.commentPost = (req, res) => {
-  // YAZID - route update hs je peux pas exploiter les form data
-
-  const { id } = req.params;
-  const { userId, message } = req.body;
-  // const data = JSON.parse(req.body.data);
-  // const data = JSON.stringify(req.body.data);
-  // console.log(data);
-
-  req.file
-    ? comments
-        .create({
-          data: {
-            // userId,
-            message,
-            picture: `${req.protocol}://${req.get('host')}/images/${
-              req.file.filename
-            }`,
-            Post: {
-              connect: {
-                id: parseInt(id),
-              },
-            },
-            User: {
-              connect: {
-                id: parseInt(userId),
-              },
-            },
-          },
-        })
-        .then(() => {
-          res.status(201).json({ message: 'post créer' });
-        })
-        .catch((err) => res.status(400).json({ err }))
-    : comments
-        .create({
-          data: {
-            message,
-            Post: {
-              connect: {
-                id: parseInt(id),
-              },
-            },
-            User: {
-              connect: {
-                id: userId,
-              },
-            },
-          },
-        })
-        .then(() => res.status(200).json({ message: 'comment créer' }))
-        .catch((err) => console.log(err));
-};
-
-module.exports.getAllComment = (req, res) => {
-  comments
-    .findMany({})
-    .then((comment) => res.send(comment))
-    .catch((err) => res.send(err));
-};
-
-module.exports.updateCommentPost = (req, res) => {
-  const { id } = req.params;
-  const { message, picture } = req.body;
-
-  comments
-    .update({
-      where: {
-        id: parseInt(id),
-      },
-      data: {
-        message,
-        picture,
-      },
-    })
-    .then((comment) => res.status(201).json({ comment }))
-    .catch((err) => res.status(201).json({ err }));
-};
-
-module.exports.deleteCommentPost = (req, res) => {
-  const { id } = req.params;
-
-  comments
-    .delete({
-      where: {
-        id: parseInt(id),
-      },
-    })
-    .then(() => res.status(200).json({ message: 'comment delete' }))
-    .catch((err) => res.status(400).json({ err }));
 };

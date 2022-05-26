@@ -14,12 +14,4 @@ router.get('/like/:id', postCtrl.getLike);
 router.patch('/like-post/:id', postCtrl.likePost);
 router.patch('/unlike-post/:id', postCtrl.unlikePost);
 
-// Comments -- MULTER A METTRE SUR ADD AND PATCH
-
-// YAZID - pourquoi il faut un id pour recup les posts ? -- PAREil pour les like au dessus
-router.get('/comment/:id', postCtrl.getAllComment);
-router.post('/comment-post/:id', postCtrl.commentPost);
-router.patch('/update-comment-post/:id', postCtrl.updateCommentPost);
-router.patch('/delete-comment-post/:id', postCtrl.deleteCommentPost);
-
 module.exports = router;

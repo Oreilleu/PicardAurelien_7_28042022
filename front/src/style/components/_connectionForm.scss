@@ -13,7 +13,7 @@
     justify-content: space-around;
 
     li {
-      background: lighten($color-2, $amount: 25%);
+      background: lighten($color-1, $amount: 30%);
       color: white;
       width: 130px;
       padding: 10px 0;
@@ -23,13 +23,13 @@
       box-shadow: 3px 3px 1px rgba(51, 51, 51, 0.418);
 
       &:hover {
-        background: lighten($color-2, $amount: 30%);
+        background: lighten($color-1, $amount: 20%);
       }
     }
   }
 
   .active-btn {
-    background: $color-2;
+    background: $color-1;
   }
 
   form {
@@ -51,7 +51,7 @@
       transition: 0.3s;
 
       &:hover {
-        background-color: lighten($color-2, 20%);
+        background-color: lighten($color-1, 20%);
       }
     }
 

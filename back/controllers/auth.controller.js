@@ -4,7 +4,6 @@ const { user } = prisma;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { isEmail } = require('validator');
-const { signUpErrors } = require('../utils/error.utils');
 const maxAge = 1 * 24 * 60 * 60 * 1000;
 
 function createToken(id) {
