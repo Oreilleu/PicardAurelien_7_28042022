@@ -17,4 +17,4 @@
 //   },
 // });
 
-// module.exports = multer({ storage }).single('picture');
+// module.exports = multer({ storage }).single('image');

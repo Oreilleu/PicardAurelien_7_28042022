@@ -29,11 +29,8 @@ module.exports.getOneUser = (req, res) => {
 module.exports.updateUser = (req, res) => {
   const { id } = req.params;
   const { pseudo, picture } = req.body;
-  // const data = JSON.parse(req.body.data);
-  // console.log(data);
 
-  // File ne passe pas, picture est une string
-
+  // Dans la reponse le mdp transit
   req.file
     ? user
         .update({

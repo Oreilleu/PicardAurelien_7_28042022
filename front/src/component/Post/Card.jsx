@@ -8,14 +8,13 @@ import DeletePost from './DeletePost'
 
 export default function Card({ post }) {
     // Data
+    const userData = useSelector(state => state.userReducer)
     const allUserData = useSelector(state => state.usersReducer)
     const postData = useSelector(state => state.postReducer)
     const userId = useContext(UidContext)
 
     // State
     const [isLoading, setIsloading] = useState(true)
-
-
 
     useEffect(() => {
         !isEmpty(allUserData) && setIsloading(false)
@@ -29,6 +28,7 @@ export default function Card({ post }) {
                 <div className="card-content">
                     <div className="card-picture-container">
                         <img src={allUserData.map(user => {
+                            // Balise image border ?
                             if (user.id === post.userId)
                                 return user.picture
                         }).join('')}
@@ -37,7 +37,7 @@ export default function Card({ post }) {
                             <Like post={post} />
                         </div>
                         {
-                            userId === post.userId ? (
+                            userId === post.userId || userData.admin === 1 ? (
                                 <div className="update-post">
                                     <DeletePost post={post} />
                                 </div>
@@ -56,7 +56,10 @@ export default function Card({ post }) {
                                 })}</h3>
                             </div>
                             <span className="card-name_date">
-                                {dateParser(postData.createAt)}
+
+                                {
+                                    // DATA INVALID ???
+                                    dateParser(postData.createAt)}
                             </span>
                         </div>
 

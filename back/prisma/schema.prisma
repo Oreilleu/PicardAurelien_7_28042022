@@ -11,12 +11,15 @@ datasource db {
 }
 
 // Un user peut avoir plusieurs post mais un post n'a qu'un user
+// Image par default ?
+// Condition sur nombre de caractère du pseudo ou mdp ?
 model User {
   id       Int     @id @default(autoincrement())
   pseudo   String  @unique
   email    String  @unique
   picture  String?
   password String
+  admin    Int?
   posts    Post[]
   like     Like[]
 }

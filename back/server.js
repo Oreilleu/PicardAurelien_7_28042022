@@ -23,11 +23,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // jwt
 app.get('*', checkUser);
 app.get('/jwtid', requireAuth, (req, res) => {
+  // console.log(res.locals)
+  if(res.locals.user === null) return console.log('No token')
   res.status(200).json(res.locals.user.id);
 });
 

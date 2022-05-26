@@ -18,10 +18,9 @@ export default function Trending() {
     }
   }, [loadPost, dispatch])
 
-  // console.log(postData)
-
-  // console.log(isProfil)
+  // Faire remonter le state de profil pour afficher le modal
   return (<div className="trending-container">
+
     {/* <div className="profil">
       <Profil />
     </div> */}

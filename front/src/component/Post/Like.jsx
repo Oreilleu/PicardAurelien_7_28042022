@@ -16,6 +16,7 @@ export default function Like({ post }) {
     // console.log(likeData[0].userId)
 
     // Savoir si le post est dans le tableau des likeData
+
     useEffect(() => {
         if (likeData.includes(userId)) console.log("ok")
         // else { console.log('ko') }
@@ -55,7 +56,7 @@ export default function Like({ post }) {
     }
 
 
-
+    // COMPTEUR DE LIKE ?
     return (
         <div className="like-container">
             {userId && isLike === false && (

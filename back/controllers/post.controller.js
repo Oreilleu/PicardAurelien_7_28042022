@@ -3,10 +3,8 @@ const prisma = new PrismaClient();
 const { post, like, image } = prisma;
 
 module.exports.createPost = async (req, res) => {
-  // Gif ca passe dans image ?
   const { id } = req.params;
   const { userId, message } = req.body;
-  // const data = JSON.parse(req.body.data);
 
   req.file
     ? post
@@ -57,6 +55,7 @@ module.exports.createPost = async (req, res) => {
         });
 };
 
+// Renvoyé les posts par ordre chronologique -- sort ?
 module.exports.getAllPost = (req, res) => {
   prisma.Post.findMany({})
     .then((post) => res.status(200).json(post))
@@ -146,11 +145,6 @@ module.exports.deletePost = (req, res) => {
     .$transaction([deleteLike, deletePost])
     .then(() => res.status(200).json({message :'message supprimer'}))
     .catch((err) => console.log(err))
-  
-
-    // .then(() => res.status(201).json({ message: 'Post supprimer' }))
-    // .catch((err) => {console.log(err)
-    //   res.status(400).json({ err })});
 };
 
 module.exports.getLike = (req, res) => {
