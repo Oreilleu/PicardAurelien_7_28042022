@@ -13,9 +13,10 @@ export default function Like({ post }) {
 
 
     // Comment faire le dispatch(getLike) sans le relancer a l'infini
-    // console.log(likeData[0].userId)
+    console.log(likeData[0])
+    console.log(likeData)
 
-    // Savoir si le post est dans le tableau des likeData
+    // Savoir si le post est dans le tableau des likeData -- filter - faire tableau 
 
     useEffect(() => {
         if (likeData.includes(userId)) console.log("ok")
@@ -56,7 +57,7 @@ export default function Like({ post }) {
     }
 
 
-    // COMPTEUR DE LIKE ?
+    // COMPTEUR DE LIKE ? incrément en base
     return (
         <div className="like-container">
             {userId && isLike === false && (

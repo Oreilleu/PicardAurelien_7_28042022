@@ -5,7 +5,7 @@ const { post, like, image } = prisma;
 module.exports.createPost = async (req, res) => {
   const { id } = req.params;
   const { userId, message } = req.body;
-
+  
   req.file
     ? post
         .create({
@@ -56,6 +56,7 @@ module.exports.createPost = async (req, res) => {
 };
 
 // Renvoyé les posts par ordre chronologique -- sort ?
+// Order by 
 module.exports.getAllPost = (req, res) => {
   prisma.Post.findMany({})
     .then((post) => res.status(200).json(post))

@@ -12,16 +12,17 @@ export default function Navbar() {
 
     // Je veux savoir si profil est true ou false et le faire remonter a la page trending
 
+    // Mettre dans redux
     const [isProfil, setIsProfil] = useState(false);
 
     const handleProfil = () => {
-      if (isProfil === false) {
-        setIsProfil(true);
-        console.log(isProfil);
-      } else {
-        setIsProfil(false);
-        console.log(isProfil);
-      }
+        if (isProfil === false) {
+            setIsProfil(true);
+            console.log(isProfil);
+        } else {
+            setIsProfil(false);
+            console.log(isProfil);
+        }
     };
 
     return (
@@ -49,7 +50,7 @@ export default function Navbar() {
                         <li className="li-hello">
                             <ul>
                                 <NavLink exact to="/trending">
-                                    <li className="logout-account" onClick={handleProfil}>PROFIL</li>
+                                    <li className="logout-account" onClick={handleProfil} profil={isProfil}>PROFIL</li>
                                 </NavLink>
                                 <Logout />
                             </ul>
