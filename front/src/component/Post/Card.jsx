@@ -56,10 +56,9 @@ export default function Card({ post }) {
                                 })}</h3>
                             </div>
                             <span className="card-name_date">
-
                                 {
-                                    // DATA INVALID ???
-                                    dateParser(postData.createAt)}
+                                    dateParser(post.createdAt)
+                                }
                             </span>
                         </div>
 
