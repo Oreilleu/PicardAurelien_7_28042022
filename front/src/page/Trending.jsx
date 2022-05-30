@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Profil from '../Profil'
+// import Profil from '../component/Profil'
 import { getPost } from '../redux/actions/post.actions'
 import { isEmpty } from '../component/utils'
 import Card from '../component/Post/Card'

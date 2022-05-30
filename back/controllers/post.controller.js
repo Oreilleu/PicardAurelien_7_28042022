@@ -82,8 +82,7 @@ module.exports.getOnePost = (req, res) => {
 
 module.exports.updatePost = (req, res) => {
   const { id } = req.params;
-  const data = JSON.parse(req.body.data);
-  console.log(JSON.stringify(image.postId));
+  const {message, picture} = res.body
 
   // Voir avec Yazid si ca va pas update plusieurs ligne si il y a deux photos
 
@@ -93,7 +92,8 @@ module.exports.updatePost = (req, res) => {
         id: parseInt(id),
       },
       data: {
-        ...data,
+        message,
+        picture
       },
     })
       .then((post) => {
@@ -120,7 +120,7 @@ module.exports.updatePost = (req, res) => {
         id: parseInt(id),
       },
       data: {
-        ...data,
+        message,
       },
     })
       .then((post) => res.status(201).json({ message: 'Post modifié', post }))

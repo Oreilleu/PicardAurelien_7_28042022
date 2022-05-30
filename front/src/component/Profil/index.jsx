@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios'
-import { UidContext } from '../component/Appcontext'
+import { UidContext } from '../Appcontext'
 import { useSelector } from 'react-redux'
 import cookie from 'js-cookie'
 

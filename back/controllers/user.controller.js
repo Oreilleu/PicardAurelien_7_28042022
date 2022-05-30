@@ -6,7 +6,17 @@ const { user, post } = prisma;
 module.exports.getAllUser = (req, res) => {
   //   console.log(req.body);
   user
-    .findMany({})
+    .findMany({
+      select : {
+        id: true,
+        pseudo: true,
+        email: true,
+        picture: true,
+        admin: true,
+        posts: true,
+        like: true,
+      }
+    })
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(400).json({ err }));
 };
@@ -16,7 +26,18 @@ module.exports.getOneUser = (req, res) => {
 
   user
     .findUnique({
-      where: { id: parseInt(id) },
+      where: { 
+        id: parseInt(id) 
+      },
+      select : {
+        id: true,
+        pseudo: true,
+        email: true,
+        picture: true,
+        admin: true,
+        posts: true,
+        like: true,
+      }
     })
     .then((user) =>
       user
@@ -46,7 +67,7 @@ module.exports.updateUser = (req, res) => {
           },
         })
         .then((user) =>
-          res.status(201).json({ message: 'Utilisateur modifier', user })
+          res.status(201).json({ message: 'Utilisateur modifier' })
         )
         .catch((err) => console.log(err))
     : user

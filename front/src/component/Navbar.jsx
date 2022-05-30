@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { UidContext } from "./Appcontext"
 import Logout from "./Log/Logout";
-// import Profil from "./Profil";
+import Profil from "./Profil";
 
 export default function Navbar() {
     // Mettre variable context
@@ -25,7 +25,7 @@ export default function Navbar() {
         }
     };
 
-    return (
+    return (<>
         <div className="nav-container">
             <div className="logo-container">
                 {userId ? (<NavLink exact to="/trending">
@@ -50,7 +50,7 @@ export default function Navbar() {
                         <li className="li-hello">
                             <ul>
                                 <NavLink exact to="/trending">
-                                    <li className="logout-account" onClick={handleProfil} profil={isProfil}>PROFIL</li>
+                                    <li className="logout-account" onClick={handleProfil} >PROFIL</li>
                                 </NavLink>
                                 <Logout />
                             </ul>
@@ -59,6 +59,15 @@ export default function Navbar() {
                 }
             </div>
 
+
+
         </div>
+        {
+            isProfil ? <div className="profil">
+                <Profil />
+            </div>
+                : null
+        }
+    </>
     )
 }

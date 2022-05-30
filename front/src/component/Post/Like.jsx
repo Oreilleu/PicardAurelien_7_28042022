@@ -13,8 +13,8 @@ export default function Like({ post }) {
 
 
     // Comment faire le dispatch(getLike) sans le relancer a l'infini
-    console.log(likeData[0])
-    console.log(likeData)
+    // console.log(likeData[0])
+    // console.log(likeData)
 
     // Savoir si le post est dans le tableau des likeData -- filter - faire tableau 
 
