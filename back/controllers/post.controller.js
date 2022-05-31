@@ -82,7 +82,8 @@ module.exports.getOnePost = (req, res) => {
 
 module.exports.updatePost = (req, res) => {
   const { id } = req.params;
-  const {message, picture} = res.body
+  const {message, picture} = req.body
+  // console.log(res.body)
 
   // Voir avec Yazid si ca va pas update plusieurs ligne si il y a deux photos
 

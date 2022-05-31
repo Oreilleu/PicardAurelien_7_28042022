@@ -5,28 +5,7 @@ import axios from 'axios'
 
 export default function DeletePost({ post }) {
     // const userId = useContext(UidContext)
-    const [isEdit, setIsEdit] = useState(false)
 
-    const handleEdit = () => {
-        if (isEdit) {
-            setIsEdit(false)
-        } else {
-            setIsEdit(true)
-        }
-    }
-
-
-    const editPost = () => {
-        handleEdit()
-
-        axios({
-            method: 'put',
-            url: (`${process.env.REACT_APP_API_URL}/api/post/${post.id}`),
-            withCredentials: true,
-        })
-            .then(res => window.location.reload())
-            .catch(err => console.log(err))
-    }
 
     const deletePost = () => {
         axios({
@@ -40,7 +19,6 @@ export default function DeletePost({ post }) {
 
 
     return (<>
-        <button onClick={editPost}>Modifier</button>
         <button onClick={deletePost}>Supprimer</button>
     </>
     )

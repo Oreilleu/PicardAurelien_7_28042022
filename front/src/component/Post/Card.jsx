@@ -5,6 +5,7 @@ import { dateParser } from '../utils'
 import { UidContext } from '../Appcontext'
 import Like from './Like'
 import DeletePost from './DeletePost'
+import FormEditPost from './FormEditPost'
 
 export default function Card({ post }) {
     // Data
@@ -15,6 +16,18 @@ export default function Card({ post }) {
 
     // State
     const [isLoading, setIsloading] = useState(true)
+    const [isEdit, setIsEdit] = useState(false)
+
+    const handleEdit = () => {
+        if (isEdit) {
+            setIsEdit(false)
+            console.log(isEdit)
+        } else {
+            setIsEdit(true)
+            console.log(isEdit)
+
+        }
+    }
 
     useEffect(() => {
         !isEmpty(allUserData) && setIsloading(false)
@@ -39,6 +52,7 @@ export default function Card({ post }) {
                         {
                             userId === post.userId || userData.admin === 1 ? (
                                 <div className="update-post">
+                                    <button onClick={handleEdit} >Modifier</button>
                                     <DeletePost post={post} />
                                 </div>
                             ) : null
@@ -73,9 +87,15 @@ export default function Card({ post }) {
                             </div>
                         ) : (
                             <div className="card-post">
-                                <div className="card-post_text">
-                                    {post.message}
-                                </div>
+                                {
+                                    isEdit ?
+                                        <FormEditPost post={post} />
+                                        :
+                                        <div className="card-post_text">
+                                            {post.message}
+                                        </div>
+                                }
+
                             </div>
                             // Faire remonter isEdit et mettre un formulaire ici
                         )}

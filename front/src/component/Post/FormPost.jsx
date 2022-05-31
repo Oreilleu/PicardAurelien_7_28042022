@@ -35,7 +35,6 @@ export default function FormPost() {
                 <input type="file" placeholder='Ajouter une image' onChange={(e) => setImage(e.target.value)} />
                 <input type="submit" />
             </div>
-
         </form>
     </>
     )
