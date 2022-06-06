@@ -50,9 +50,10 @@ module.exports.getOneUser = (req, res) => {
 
 module.exports.updateUser = (req, res) => {
   const { id } = req.params;
-  const { pseudo, picture } = req.body;
+  const { pseudo } = req.body;
 
-  // Dans la reponse le mdp transit
+  console.log(req.file)
+
   req.file
     ? user
         .update({
@@ -61,12 +62,12 @@ module.exports.updateUser = (req, res) => {
           },
           data: {
             pseudo,
-            picture: `${req.protocol}://${req.get('host')}/images/${
+            picture: `${req.protocol}://${req.get('host')}/images/profil/${
               req.file.filename
             }`,
           },
         })
-        .then((user) =>
+        .then(() =>
           res.status(201).json({ message: 'Utilisateur modifier' })
         )
         .catch((err) => console.log(err))

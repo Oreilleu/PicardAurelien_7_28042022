@@ -1,20 +1,22 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import { UidContext } from '../Appcontext'
 import { useSelector } from 'react-redux'
 import cookie from 'js-cookie'
+import { isEmpty } from '../utils'
 
 // import { useSelector } from 'react-redux'
 
 export default function Profil() {
-    const [pseudo, setPseudo] = useState('')
-    const [picture, setPicture] = useState()
-    const userId = useContext(UidContext)
     const userData = useSelector((state) => state.userReducer)
+    const userId = useContext(UidContext)
 
-    // console.log(pseudo, picture)
 
-    const handleFileReader = (e) => {
+
+    const [pseudo, setPseudo] = useState(userData.pseudo)
+    const [file, setFile] = useState()
+
+    const handleFileReader = () => {
         const input = document.querySelector('input[type="file"')
         const img = document.querySelector('.receiverImg')
         const reader = new FileReader()
@@ -25,28 +27,18 @@ export default function Profil() {
         }
         reader.readAsDataURL(input.files[0])
 
-        setPicture(e.target.value)
     }
 
     const handleSubmit = (e) => {
-        // Lors de l'envoi je veux envoyer les données image + pseud
-        // Sur route update user
-        // Ajouter les pseudo en placeholder et image de base du serveur
-
-        e.preventDefault()
-
-        // const data = new FormData()
-        // data.append('pseudo', pseudo)
-        // data.append('file', picture)
+        const data = new FormData()
+        data.append('pseudo', pseudo)
+        data.append('file', file)
 
         axios({
             method: 'put',
             url: `${process.env.REACT_APP_API_URL}/api/user/${userId}`,
             withCredentials: true,
-            data: {
-                pseudo,
-                picture
-            },
+            data
         })
             .then((res) => console.log(res))
             .then((err) => console.log(err))
@@ -77,10 +69,13 @@ export default function Profil() {
                 <img src="" alt="" className='receiverImg' />
             </div>
             <form action="" onSubmit={handleSubmit} >
-                <input type="file" onChange={handleFileReader} />
+                <input type="file" onChange={(e) => {
+                    handleFileReader()
+                    setFile(e.target.files[0])
+                }} />
                 <br />
                 <label htmlFor="pseudo">Pseudo</label>
-                <input type="text" name='pseudo' id='pseudo' onChange={(e) => setPseudo(e.target.value)} placeholder={userData.pseudo} />
+                <input type="text" name='pseudo' id='pseudo' placeholder={userData.pseudo} onChange={(e) => setPseudo(e.target.value)} />
                 <br />
                 <input type="submit" value='Enregistrer changement' className='submitBtn' />
                 <br />

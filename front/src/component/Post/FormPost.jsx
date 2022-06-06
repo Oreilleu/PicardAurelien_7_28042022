@@ -8,20 +8,23 @@ export default function FormPost() {
     const userId = useContext(UidContext)
 
     const [message, setMessage] = useState('')
-    const [image, setImage] = useState('')
+    const [file, setFile] = useState('')
 
     function handleSubmit() {
+        const data = new FormData()
+        data.append('message', message)
+        data.append('file', file)
+        data.append('userId', userId)
+
         axios({
             method: 'post',
             url: (`${process.env.REACT_APP_API_URL}/api/post`),
             withCredentials: true,
-            data: {
-                message,
-                image,
-                userId
-            }
+            data
         })
-            .then((res) => console.log(res))
+        .then((res) => { 
+
+                console.log(res)})
             .catch((err) => console.log(err))
     }
 
@@ -32,7 +35,7 @@ export default function FormPost() {
         <form action="post" onSubmit={handleSubmit}>
             <input type="text" className='text-form' placeholder={`Quoi de neuf ${userData.pseudo}`} onChange={(e) => setMessage(e.target.value)} />
             <div className="btn-container">
-                <input type="file" placeholder='Ajouter une image' onChange={(e) => setImage(e.target.value)} />
+                <input type="file" placeholder='Ajouter une image' onChange={(e) => setFile(e.target.files[0])} />
                 <input type="submit" />
             </div>
         </form>

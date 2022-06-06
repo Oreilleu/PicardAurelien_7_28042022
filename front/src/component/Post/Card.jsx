@@ -8,6 +8,7 @@ import DeletePost from './DeletePost'
 import FormEditPost from './FormEditPost'
 
 export default function Card({ post }) {
+    // console.log(post)
     // Data
     const userData = useSelector(state => state.userReducer)
     const allUserData = useSelector(state => state.usersReducer)
@@ -25,7 +26,6 @@ export default function Card({ post }) {
         } else {
             setIsEdit(true)
             console.log(isEdit)
-
         }
     }
 
@@ -40,12 +40,15 @@ export default function Card({ post }) {
             ) : (
                 <div className="card-content">
                     <div className="card-picture-container">
-                        <img src={allUserData.map(user => {
-                            // Balise image border ?
-                            if (user.id === post.userId)
-                                return user.picture
-                        }).join('')}
-                            alt="Profil utilisateur" />
+                        <div className="img-container">
+                            <img src={allUserData.map(user => {
+                                // Balise image border ?
+                                if (user.id === post.userId)
+                                    return user.picture
+                            }).join('')}
+                                alt="Profil utilisateur" />
+                        </div>
+
                         <div className="like">
                             <Like post={post} />
                         </div>
@@ -76,14 +79,22 @@ export default function Card({ post }) {
                             </span>
                         </div>
 
-                        {postData.picture ? (
+                        {post.picture ? (
                             <div className="card-post">
-                                <div className="card-post_text">
-                                    {post.message}
-                                </div>
-                                <div className="card-post_picture">
-                                    {post.picture}
-                                </div>
+
+                                {
+                                    isEdit ? <FormEditPost post={post} />
+                                        :
+                                        <>
+                                            <div className="card-post_text">
+                                                {post.message}
+                                            </div>
+                                            <div className="card-post_picture">
+                                                <img src={post.picture} alt="pic post" />
+                                            </div>
+                                        </>
+                                }
+
                             </div>
                         ) : (
                             <div className="card-post">
@@ -97,7 +108,6 @@ export default function Card({ post }) {
                                 }
 
                             </div>
-                            // Faire remonter isEdit et mettre un formulaire ici
                         )}
                     </div>
                 </div>

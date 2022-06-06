@@ -6,61 +6,73 @@ module.exports.createPost = async (req, res) => {
   const { id } = req.params;
   const { userId, message } = req.body;
 
+  console.log(req.file);
+
   req.file
     ? post
-      .create({
-        data: {
-          userId,
-          message,
-          User: {
-            connect: {
-              id: userId,
-            },
-          },
-        },
-      })
-      .then((post) =>
-        image
-          .create({
-            data: {
-              image: `${req.protocol}://${req.get('host')}/images/${req.file.filename
-                }`,
-              Post: {
-                connect: {
-                  id: JSON.parse(post.id),
-                },
+        .create({
+          data: {
+            message,
+            picture: `${req.protocol}://${req.get('host')}/images/post/${
+              req.file.filename
+            }`,
+            User: {
+              connect: {
+                id: parseInt(userId),
               },
             },
-          })
-          .then((post) => res.send({ post }))
-          .catch((err) => res.send({ err }))
-      )
-      .catch((err) => res.send({ err }))
+          },
+        })
+        .then(
+          (post) => res.send(post)
+          // image
+          //   .create({
+          //     data: {
+          //       image: `${req.protocol}://${req.get('host')}/images/post/${
+          //         req.file.filename
+          //       }`,
+          //       Post: {
+          //         connect: {
+          //           id: JSON.parse(post.id),
+          //         },
+          //       },
+          //     },
+          //   })
+          //   .then((post) => res.send({ post }))
+          //   .catch((err) => {
+          //     console.log(err);
+          //     res.send({ err });
+          //   })
+        )
+        .catch((err) => {
+          console.log(err);
+          res.send({ err });
+        })
     : post
-      .create({
-        data: {
-          message,
-          User: {
-            connect: {
-              id: userId,
+        .create({
+          data: {
+            message,
+            User: {
+              connect: {
+                id: parseInt(userId),
+              },
             },
           },
-        },
-      })
-      .then((post) => res.status(200).json(post))
-      .catch((err) => {
-        console.log(err);
-        res.status(400).json({ err });
-      });
+        })
+        .then((post) => res.status(200).json(post))
+        .catch((err) => {
+          console.log(err);
+          res.status(400).json({ err });
+        });
 };
 
 // Renvoyé les posts par ordre chronologique -- sort ?
-// Order by 
+// Order by
 module.exports.getAllPost = (req, res) => {
   prisma.Post.findMany({
     orderBy: {
-      createdAt: 'desc'
-    }
+      createdAt: 'desc',
+    },
   })
     .then((post) => res.status(200).json(post))
     .catch((err) => res.status(400).json({ err }));
@@ -82,50 +94,50 @@ module.exports.getOnePost = (req, res) => {
 
 module.exports.updatePost = (req, res) => {
   const { id } = req.params;
-  const {message, picture} = req.body
-  // console.log(res.body)
-
-  // Voir avec Yazid si ca va pas update plusieurs ligne si il y a deux photos
+  const { message } = req.body;
 
   req.file
-    ? prisma.Post.update({
-      where: {
-        id: parseInt(id),
-      },
-      data: {
-        message,
-        picture
-      },
-    })
-      .then((post) => {
-        console.log(post);
-        console.log(id);
-        image
-          .updateMany({
-            where: {
-              postId: JSON.parse(id),
-            },
-            data: {
-              image: `${req.protocol}://${req.get('host')}/images/${req.file.filename
-                }`,
-            },
-          })
-          .then((post) =>
-            res.status(201).json({ message: 'post modifié', post })
-          )
-          .catch((err) => console.log(err));
+    ? post.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          message,
+          picture : `${req.protocol}://${req.get('host')}/images/post/${
+            req.file.filename
+          }`,
+        },
       })
-      .catch((err) => res.status(400).json({ err }))
-    : prisma.Post.update({
-      where: {
-        id: parseInt(id),
-      },
-      data: {
-        message,
-      },
-    })
-      .then((post) => res.status(201).json({ message: 'Post modifié', post }))
-      .catch((err) => res.status(400).json({ err }));
+        .then((post) => { res.send(post)
+          // console.log(post);
+          // console.log(id);
+          // image
+          //   .updateMany({
+          //     where: {
+          //       postId: JSON.parse(id),
+          //     },
+          //     data: {
+          //       image: `${req.protocol}://${req.get('host')}/images/${
+          //         req.file.filename
+          //       }`,
+          //     },
+          //   })
+          //   .then((post) =>
+          //     res.status(201).json({ message: 'post modifié', post })
+          //   )
+          //   .catch((err) => console.log(err));
+        })
+        .catch((err) => res.status(400).json({ err }))
+    : post.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          message,
+        },
+      })
+        .then((post) => res.status(201).json({ message: 'Post modifié', post }))
+        .catch((err) => res.status(400).json({ err }));
 };
 
 module.exports.deletePost = (req, res) => {
@@ -135,20 +147,20 @@ module.exports.deletePost = (req, res) => {
 
   const deleteLike = like.deleteMany({
     where: {
-      postId: parseInt(id)
-    }
-  })
+      postId: parseInt(id),
+    },
+  });
 
   const deletePost = post.delete({
     where: {
       id: parseInt(id),
     },
-  })
+  });
 
   prisma
     .$transaction([deleteLike, deletePost])
     .then(() => res.status(200).json({ message: 'message supprimer' }))
-    .catch((err) => console.log(err))
+    .catch((err) => console.log(err));
 };
 
 module.exports.getLike = (req, res) => {

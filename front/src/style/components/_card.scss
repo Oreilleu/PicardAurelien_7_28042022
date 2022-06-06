@@ -24,6 +24,23 @@
             // background-color: antiquewhite;
             margin: 10px;
 
+            .img-container {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+            }
+
+
             .like {
                 width: 100%;
                 margin: 10px 0;
@@ -50,6 +67,12 @@
             .card-post {
                 text-align: center;
                 margin-top: 10px;
+            }
+
+            img {
+                max-width: 300px;
+                max-height: 300px;
+                object-fit: cover;
             }
         }
     }
