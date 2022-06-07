@@ -26,7 +26,6 @@ export default function Profil() {
             document.querySelector('.img-container').appendChild(img)
         }
         reader.readAsDataURL(input.files[0])
-
     }
 
     const handleSubmit = (e) => {

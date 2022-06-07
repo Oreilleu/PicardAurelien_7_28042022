@@ -41,4 +41,17 @@
             text-align: center;
         }
     }
+
+    .imgPost-container {
+        position: relative;
+        bottom: 0px;
+        text-align: center;
+        padding: 10px;
+
+        img {
+            width: 150px;
+            height: 150px;
+        }
+
+    }
 }

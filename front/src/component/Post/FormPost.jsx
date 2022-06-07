@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { UidContext } from '../Appcontext'
+import { isEmpty } from '../utils'
 
 export default function FormPost() {
     const userData = useSelector((state) => state.userReducer)
@@ -9,6 +10,18 @@ export default function FormPost() {
 
     const [message, setMessage] = useState('')
     const [file, setFile] = useState('')
+
+    const handleFileReader = () => {
+        const input = document.querySelector('input[type="file"')
+        const img = document.querySelector('.receiverImg')
+        const reader = new FileReader()
+        reader.onload = function () {
+            img.src = reader.result
+            img.alt = 'photo profil'
+            document.querySelector('.imgPost-container').appendChild(img)
+        }
+        reader.readAsDataURL(input.files[0])
+    }
 
     function handleSubmit() {
         const data = new FormData()
@@ -22,9 +35,10 @@ export default function FormPost() {
             withCredentials: true,
             data
         })
-        .then((res) => { 
+            .then((res) => {
 
-                console.log(res)})
+                console.log(res)
+            })
             .catch((err) => console.log(err))
     }
 
@@ -35,10 +49,23 @@ export default function FormPost() {
         <form action="post" onSubmit={handleSubmit}>
             <input type="text" className='text-form' placeholder={`Quoi de neuf ${userData.pseudo}`} onChange={(e) => setMessage(e.target.value)} />
             <div className="btn-container">
-                <input type="file" placeholder='Ajouter une image' onChange={(e) => setFile(e.target.files[0])} />
-                <input type="submit" />
+                <label htmlFor="file">Choisir un fichier</label>
+                <input type="file" id='file' placeholder='Ajouter une image' onChange={(e) => {
+                    handleFileReader()
+                    setFile(e.target.files[0])
+                }} className='inputFile' />
+                <input type="submit" className='send' />
             </div>
+            {
+                !isEmpty(file) ? <div className="imgPost-container">
+                    <img src="" alt="" className='receiverImg' />
+                </div> : null
+            }
+
         </form>
+
+
+
     </>
     )
 }

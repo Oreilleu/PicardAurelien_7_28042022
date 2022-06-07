@@ -19,7 +19,7 @@ export default function DeletePost({ post }) {
 
 
     return (<>
-        <button onClick={deletePost}>Supprimer</button>
+        <button onClick={deletePost} className='delete'>Supprimer</button>
     </>
     )
 }

@@ -55,7 +55,7 @@ export default function Card({ post }) {
                         {
                             userId === post.userId || userData.admin === 1 ? (
                                 <div className="update-post">
-                                    <button onClick={handleEdit} >Modifier</button>
+                                    <button onClick={handleEdit} className='modify'>Modifier</button>
                                     <DeletePost post={post} />
                                 </div>
                             ) : null

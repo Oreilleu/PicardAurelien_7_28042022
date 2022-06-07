@@ -33,8 +33,8 @@ export default function FormEditPost({ post }) {
                 <br />
                 <br />
                 <div className="btn-edit-container">
-                    <input type="file" placeholder='Ajouter une image' onChange={(e) => setFile(e.target.files[0])} />
-                    <input type="submit" />
+                    <input type="file" placeholder='Ajouter une image' onChange={(e) => setFile(e.target.files[0])} className='inputFile' />
+                    <input type="submit" className='send' />
                 </div>
             </form>
         </div>
