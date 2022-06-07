@@ -13,7 +13,7 @@ import { getAllUsers } from './redux/actions/users.actions';
 
 // Log redux
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { getLike } from './redux/actions/post.actions';
+import { getLike } from './redux/actions/like.actions';
 
 const store = createStore(
   rootReducer,

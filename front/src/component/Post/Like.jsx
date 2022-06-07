@@ -7,23 +7,38 @@ import axios from 'axios'
 
 export default function Like({ post }) {
     const [isLike, setIsLike] = useState(false)
-    const likeData = useSelector(state => state.postReducer)
+    const likeData = useSelector(state => state.likeReducer)
     const userId = useContext(UidContext)
+    let sum = 0;
     // const dispatch = useDispatch()
 
 
     // Comment faire le dispatch(getLike) sans le relancer a l'infini
     // console.log(likeData[0])
-    // console.log(likeData)
+    console.log(likeData.length)
+    let arrayUserId = []
+    let arrayPostId = []
+
+    for (let i = 0; i < likeData.length; i++) {
+        arrayUserId.push(likeData[i].userId)
+        arrayPostId.push(likeData[i].postId)
+    }
+
+    console.log(arrayUserId)
+    console.log(arrayPostId)
 
     // Savoir si le post est dans le tableau des likeData -- filter - faire tableau 
 
     useEffect(() => {
-        if (likeData.includes(userId)) console.log("ok")
-        // else { console.log('ko') }
-        // setIsLike(true)
-
-    }, [userId, likeData, isLike])
+        arrayPostId.map(like => {
+            if (like === post.id) {
+                if (arrayUserId.includes(userId))
+                    setIsLike(true)
+                // else if (!arrayUserId.includes(userId))
+                //     setIsLike(false)
+            }
+        })
+    }, [])
 
 
     const handleLike = () => {
@@ -56,19 +71,34 @@ export default function Like({ post }) {
         setIsLike(false)
     }
 
-
     // COMPTEUR DE LIKE ? incrément en base
     return (
         <div className="like-container">
             {userId && isLike === false && (
-                <button className="btn-like" onClick={handleLike}>
-                    Like
-                </button>
+                <>
+                    <button className="btn-like" onClick={handleLike}>
+                        Like
+                    </button>
+                    <span>{arrayPostId.length}</span>
+                </>
             )}
+
             {userId && isLike === true && (
-                <button className="btn-like" onClick={handleUnlike}>
-                    UnLike
-                </button>
+                // Je veux afficher le nombre de like par post
+                // Map sur array post : si post == 
+                <>
+                    <button className="btn-like" onClick={handleUnlike}>
+                        UnLike
+                    </button>
+
+                    {/* <span>{
+                        arrayPostId.map(postLike => {
+                            if (postLike === post.id) {
+                                sum++
+                            }
+                            return sum
+                        })}</span> */}
+                </>
             )}
         </div>
     )

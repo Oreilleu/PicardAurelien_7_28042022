@@ -44,7 +44,7 @@ export default function FormPost() {
 
     return (<>
         <div className='img-container'>
-            <img src="" alt="" />
+            <img src={userData.picture} alt="pic profil user" />
         </div>
         <form action="post" onSubmit={handleSubmit}>
             <input type="text" className='text-form' placeholder={`Quoi de neuf ${userData.pseudo}`} onChange={(e) => setMessage(e.target.value)} />
