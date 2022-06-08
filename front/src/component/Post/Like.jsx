@@ -2,6 +2,9 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { UidContext } from '../Appcontext'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+
 // import { getLike } from '../../redux/actions/post.actions'
 
 
@@ -78,7 +81,9 @@ export default function Like({ post }) {
                 <>
                     <button className="btn-like" onClick={handleLike}>
                         Like
+
                     </button>
+                    <FontAwesomeIcon icon={faHeart} className='vert' />
                     <span>{arrayPostId.length}</span>
                 </>
             )}
