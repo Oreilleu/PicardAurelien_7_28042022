@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const { user, post } = prisma;
+const { user, post, like } = prisma;
 
 module.exports.getAllUser = (req, res) => {
   //   console.log(req.body);
@@ -87,6 +87,12 @@ module.exports.updateUser = (req, res) => {
 module.exports.deleteUser = (req, res) => {
   const { id } = req.params;
 
+  const deleteLike = like.deleteMany({
+    where: {
+      userId: parseInt(id)
+    }
+  })
+
   const deletePost = post.deleteMany({
     where: {
       userId: parseInt(id),
@@ -100,7 +106,7 @@ module.exports.deleteUser = (req, res) => {
   });
 
   prisma
-    .$transaction([deletePost, deleteUser])
+    .$transaction([deleteLike, deletePost, deleteUser])
     .then(() => res.status(201).json({ message: 'Utilisateur supprimer' }))
     .catch((err) => res.status(400).json({ err }));
 };

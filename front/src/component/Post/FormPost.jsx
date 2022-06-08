@@ -2,7 +2,6 @@ import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { UidContext } from '../Appcontext'
-import { isEmpty } from '../utils'
 
 export default function FormPost() {
     const userData = useSelector((state) => state.userReducer)
@@ -57,7 +56,7 @@ export default function FormPost() {
                 <input type="submit" className='send' />
             </div>
             {
-                !isEmpty(file) ? <div className="imgPost-container">
+                !file ? <div className="imgPost-container">
                     <img src="" alt="" className='receiverImg' />
                 </div> : null
             }

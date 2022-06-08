@@ -9,16 +9,11 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 
 export default function Like({ post }) {
+
     const [isLike, setIsLike] = useState(false)
     const likeData = useSelector(state => state.likeReducer)
     const userId = useContext(UidContext)
-    let sum = 0;
-    // const dispatch = useDispatch()
 
-
-    // Comment faire le dispatch(getLike) sans le relancer a l'infini
-    // console.log(likeData[0])
-    console.log(likeData.length)
     let arrayUserId = []
     let arrayPostId = []
 
@@ -27,8 +22,8 @@ export default function Like({ post }) {
         arrayPostId.push(likeData[i].postId)
     }
 
-    console.log(arrayUserId)
-    console.log(arrayPostId)
+    // console.log(arrayUserId)
+    // console.log(arrayPostId)
 
     // Savoir si le post est dans le tableau des likeData -- filter - faire tableau 
 
@@ -37,8 +32,6 @@ export default function Like({ post }) {
             if (like === post.id) {
                 if (arrayUserId.includes(userId))
                     setIsLike(true)
-                // else if (!arrayUserId.includes(userId))
-                //     setIsLike(false)
             }
         })
     }, [])
@@ -68,13 +61,14 @@ export default function Like({ post }) {
                 userId: userId
             }
         })
-            .then((res) => console.log(res))
+            .then((res) => {
+                console.log(res)
+            })
             .catch((err) => console.log(err))
 
         setIsLike(false)
     }
 
-    // COMPTEUR DE LIKE ? incrément en base
     return (
         <div className="like-container">
             {userId && isLike === false && (
@@ -83,26 +77,25 @@ export default function Like({ post }) {
                         Like
 
                     </button>
-                    <FontAwesomeIcon icon={faHeart} className='vert' />
-                    <span>{arrayPostId.length}</span>
+                    {/* <FontAwesomeIcon icon={faHeart} className='vert' /> */}
+                    <span></span>
                 </>
             )}
 
             {userId && isLike === true && (
-                // Je veux afficher le nombre de like par post
-                // Map sur array post : si post == 
                 <>
                     <button className="btn-like" onClick={handleUnlike}>
                         UnLike
                     </button>
+                    <div className='compteur-like'></div>
 
-                    {arrayPostId.map(postLike => {
-                        let array = []
+                    {/* {arrayPostId.map(postLike => {
+                        let compt = 0
                         if (postLike === post.id) {
-                            array.push(postLike)
+                            Number(compt++)
                         }
-                        return array.length
-                    })}
+                        return compt
+                    })} */}
                 </>
             )}
         </div>

@@ -106,7 +106,6 @@ export default function Card({ post }) {
                                             {post.message}
                                         </div>
                                 }
-
                             </div>
                         )}
                     </div>

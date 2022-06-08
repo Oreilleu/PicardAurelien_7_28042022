@@ -97,53 +97,37 @@ module.exports.updatePost = (req, res) => {
   const { message } = req.body;
 
   req.file
-    ? post.update({
-        where: {
-          id: parseInt(id),
-        },
-        data: {
-          message,
-          picture : `${req.protocol}://${req.get('host')}/images/post/${
-            req.file.filename
-          }`,
-        },
-      })
-        .then((post) => { res.send(post)
-          // console.log(post);
-          // console.log(id);
-          // image
-          //   .updateMany({
-          //     where: {
-          //       postId: JSON.parse(id),
-          //     },
-          //     data: {
-          //       image: `${req.protocol}://${req.get('host')}/images/${
-          //         req.file.filename
-          //       }`,
-          //     },
-          //   })
-          //   .then((post) =>
-          //     res.status(201).json({ message: 'post modifié', post })
-          //   )
-          //   .catch((err) => console.log(err));
+    ? post
+        .update({
+          where: {
+            id: parseInt(id),
+          },
+          data: {
+            message,
+            picture: `${req.protocol}://${req.get('host')}/images/post/${
+              req.file.filename
+            }`,
+          },
+        })
+        .then((post) => {
+          res.send(post);
         })
         .catch((err) => res.status(400).json({ err }))
-    : post.update({
-        where: {
-          id: parseInt(id),
-        },
-        data: {
-          message,
-        },
-      })
+    : post
+        .update({
+          where: {
+            id: parseInt(id),
+          },
+          data: {
+            message,
+          },
+        })
         .then((post) => res.status(201).json({ message: 'Post modifié', post }))
         .catch((err) => res.status(400).json({ err }));
 };
 
 module.exports.deletePost = (req, res) => {
   const { id } = req.params;
-
-  // Supprimer les like en premier
 
   const deleteLike = like.deleteMany({
     where: {
@@ -166,13 +150,17 @@ module.exports.deletePost = (req, res) => {
 module.exports.getLike = (req, res) => {
   like
     .findMany({})
-    .then((like) => res.status(200).json(like))
+    .then((like) => {
+      console.log(like);
+      res.status(200).json(like);
+    })
     .catch((err) => res.status(400).json(err));
 };
 
 module.exports.likePost = (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
+  let count = 0;
 
   like
     .create({
@@ -181,24 +169,25 @@ module.exports.likePost = (req, res) => {
         postId: parseInt(id),
       },
     })
-    .then(() => res.status(200).json({ message: 'post liké' }))
-    // like
-    //   .findUnique({
-    //     where: {
-    //       postId: id,
-    //     },
-    //   })
-    //   .then((datta) => console.log(datta))
-    //   .catch((err) => console.log(err))
-    // )
-
-    // Est ce que je garde comme ca ou je garde le catch pour l'erreur ? YAZID
+    .then(
+      (like) => res.status(200).json(like)
+      // postLike.map((post) => {
+      //   console.log(postLike);
+      //   if (postLike.postId === id) {
+      //     count++;
+      //   }
+      //   res.status(200).send(count);
+      // })
+      // res.status(200).json({ message: 'post liké' }
+    )
     .catch((err) => res.send({ message: 'déja liké' }));
 };
 
 module.exports.unlikePost = (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
+
+  // Faire un tableau ici qui renvoi le nombre de fois ou le postId = userId
 
   like
     .deleteMany({
@@ -207,10 +196,17 @@ module.exports.unlikePost = (req, res) => {
         userId: parseInt(userId),
       },
     })
-    .then((post) =>
-      post.count == 0
-        ? res.send({ message: 'post non liké' })
-        : res.status(200).json({ message: 'post unliké' })
+    .then(
+      (post) => console.log(post)
+      // post.count == 0
+      //   ? res.send({ message: 'post non liké' })
+      //   : post.map((postLike) => {
+      //       let compt = 0;
+      //       if (postLike.postId === id) {
+      //         compt++;
+      //       }
+      //       res.status(200).json(compt);
+      //     })
     )
     .catch((err) => res.send({ message: 'Post non liké' }));
 };
