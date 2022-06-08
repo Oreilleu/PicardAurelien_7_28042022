@@ -91,13 +91,13 @@ export default function Like({ post }) {
                         UnLike
                     </button>
 
-                    {/* <span>{
-                        arrayPostId.map(postLike => {
-                            if (postLike === post.id) {
-                                sum++
-                            }
-                            return sum
-                        })}</span> */}
+                    {arrayPostId.map(postLike => {
+                        let array = []
+                        if (postLike === post.id) {
+                            array.push(postLike)
+                        }
+                        return array.length
+                    })}
                 </>
             )}
         </div>

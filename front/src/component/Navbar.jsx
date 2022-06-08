@@ -64,7 +64,7 @@ export default function Navbar() {
         </div>
         {
             isProfil ? <div className="profil">
-                <Profil />
+                <Profil isProfil={isProfil} setIsProfil={setIsProfil} />
             </div>
                 : null
         }

@@ -4,14 +4,14 @@ import { UidContext } from '../Appcontext'
 import { useSelector } from 'react-redux'
 import cookie from 'js-cookie'
 import { isEmpty } from '../utils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 // import { useSelector } from 'react-redux'
 
-export default function Profil() {
+export default function Profil({ setIsProfil }) {
     const userData = useSelector((state) => state.userReducer)
     const userId = useContext(UidContext)
-
-
 
     const [pseudo, setPseudo] = useState(userData.pseudo)
     const [file, setFile] = useState()
@@ -58,14 +58,19 @@ export default function Profil() {
 
     }
 
+    const handleCross = () => {
+        setIsProfil(false)
+    }
+
     // Voir avec Yaiz dpour le cadre visible de l'image
     // File ne passe pas dans le back malgrés multer et form data
 
     // Faire un component delete car 2 submit donc fait une requete put pour delete
     return (
         <div className='profil-container'>
+            <FontAwesomeIcon icon={faXmark} className='icon-cross' onClick={handleCross} />
             <div className="img-container">
-                <img src="" alt="" className='receiverImg' />
+                <img src={userData.picture} alt="" className='receiverImg' />
             </div>
             <form action="" onSubmit={handleSubmit} >
                 <input type="file" onChange={(e) => {
