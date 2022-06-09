@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { isEmpty } from '../utils'
 
 export default function FormEditPost({ post }) {
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState(post.message)
     const [file, setFile] = useState('')
 
     console.log(message)
@@ -10,7 +11,6 @@ export default function FormEditPost({ post }) {
     const data = new FormData()
     data.append('message', message)
     data.append('file', file)
-
 
     const handleSubmit = (e) => {
         // e.preventDefault()
@@ -29,7 +29,7 @@ export default function FormEditPost({ post }) {
             <form action="post" onSubmit={handleSubmit}>
                 <label htmlFor="text-edit">Nouveau message</label>
                 <br />
-                <input type="text" className='text-edit' id='text-edit' placeholder='New message' onChange={(e) => setMessage(e.target.value)} />
+                <input type="text" className='text-edit' id='text-edit' placeholder={post.message} defaultValue={post.message} onChange={(e) => setMessage(e.target.value)} />
                 <br />
                 <br />
                 <div className="btn-edit-container">

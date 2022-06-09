@@ -3,7 +3,10 @@ import { useSelector } from 'react-redux'
 import { UidContext } from '../Appcontext'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+// import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
+// import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsDown } from '@fortawesome/free-regular-svg-icons'
 
 // import { getLike } from '../../redux/actions/post.actions'
 
@@ -73,20 +76,15 @@ export default function Like({ post }) {
         <div className="like-container">
             {userId && isLike === false && (
                 <>
-                    <button className="btn-like" onClick={handleLike}>
-                        Like
-
-                    </button>
-                    {/* <FontAwesomeIcon icon={faHeart} className='vert' /> */}
+                    <FontAwesomeIcon icon={faThumbsUp} className='thumbsUp' onClick={handleLike} style={{ color: "blue" }} />
                     <span></span>
                 </>
             )}
 
             {userId && isLike === true && (
                 <>
-                    <button className="btn-like" onClick={handleUnlike}>
-                        UnLike
-                    </button>
+                    <FontAwesomeIcon icon={faThumbsDown} className='thumbsDown' onClick={handleUnlike} />
+
                     <div className='compteur-like'></div>
 
                     {/* {arrayPostId.map(postLike => {

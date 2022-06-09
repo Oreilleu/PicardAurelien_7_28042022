@@ -48,18 +48,25 @@ export default function FormPost() {
         <form action="post" onSubmit={handleSubmit}>
             <input type="text" className='text-form' placeholder={`Quoi de neuf ${userData.pseudo}`} onChange={(e) => setMessage(e.target.value)} />
             <div className="btn-container">
-                <label htmlFor="file">Choisir un fichier</label>
+                <label htmlFor="file" className='labelFile'>Choisir un fichier</label>
                 <input type="file" id='file' placeholder='Ajouter une image' onChange={(e) => {
                     handleFileReader()
                     setFile(e.target.files[0])
                 }} className='inputFile' />
                 <input type="submit" className='send' />
-            </div>
-            {
-                !file ? <div className="imgPost-container">
+
+                {/* <div className="imgPost-container">
                     <img src="" alt="" className='receiverImg' />
-                </div> : null
-            }
+                </div> */}
+
+                {
+                    file ? <div className="imgPost-container">
+                        <img src={file} alt="" className='receiverImg' />
+                    </div> : null
+                }
+
+            </div>
+
 
         </form>
 

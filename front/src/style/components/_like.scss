@@ -1,1 +1,11 @@
-.btn-heart {}
+.thumbsUp,
+.thumbsDown {
+    color: blue;
+    font-size: 30px;
+    cursor: pointer;
+    transition: 300ms;
+
+    &:hover {
+        font-size: 32px;
+    }
+}
