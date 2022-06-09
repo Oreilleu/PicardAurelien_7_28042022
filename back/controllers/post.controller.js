@@ -70,6 +70,9 @@ module.exports.createPost = async (req, res) => {
 // Order by
 module.exports.getAllPost = (req, res) => {
   prisma.Post.findMany({
+    include: {
+      _count: true  
+    },
     orderBy: {
       createdAt: 'desc',
     },
@@ -169,17 +172,7 @@ module.exports.likePost = (req, res) => {
         postId: parseInt(id),
       },
     })
-    .then(
-      (like) => res.status(200).json(like)
-      // postLike.map((post) => {
-      //   console.log(postLike);
-      //   if (postLike.postId === id) {
-      //     count++;
-      //   }
-      //   res.status(200).send(count);
-      // })
-      // res.status(200).json({ message: 'post liké' }
-    )
+    .then((like) => res.status(200).send(like))
     .catch((err) => res.send({ message: 'déja liké' }));
 };
 
@@ -197,7 +190,7 @@ module.exports.unlikePost = (req, res) => {
       },
     })
     .then(
-      (post) => console.log(post)
+      (unlike) => console.log(unlike)
       // post.count == 0
       //   ? res.send({ message: 'post non liké' })
       //   : post.map((postLike) => {

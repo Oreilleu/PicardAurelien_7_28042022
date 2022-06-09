@@ -9,17 +9,10 @@ export default function FormPost() {
 
     const [message, setMessage] = useState('')
     const [file, setFile] = useState('')
+    const [postPicture, setPostPicture] = useState(null)
 
-    const handleFileReader = () => {
-        const input = document.querySelector('input[type="file"')
-        const img = document.querySelector('.receiverImg')
-        const reader = new FileReader()
-        reader.onload = function () {
-            img.src = reader.result
-            img.alt = 'photo profil'
-            document.querySelector('.imgPost-container').appendChild(img)
-        }
-        reader.readAsDataURL(input.files[0])
+    const handleFileReader = (e) => {
+        setPostPicture(URL.createObjectURL(e.target.files[0]))
     }
 
     function handleSubmit() {
@@ -41,7 +34,8 @@ export default function FormPost() {
             .catch((err) => console.log(err))
     }
 
-    return (<>
+    return (
+    <>
         <div className='img-container'>
             <img src={userData.picture} alt="pic profil user" />
         </div>
@@ -50,28 +44,18 @@ export default function FormPost() {
             <div className="btn-container">
                 <label htmlFor="file" className='labelFile'>Choisir un fichier</label>
                 <input type="file" id='file' placeholder='Ajouter une image' onChange={(e) => {
-                    handleFileReader()
+                    handleFileReader(e)
                     setFile(e.target.files[0])
                 }} className='inputFile' />
                 <input type="submit" className='send' />
 
-                {/* <div className="imgPost-container">
-                    <img src="" alt="" className='receiverImg' />
-                </div> */}
-
                 {
-                    file ? <div className="imgPost-container">
-                        <img src={file} alt="" className='receiverImg' />
-                    </div> : null
+                    postPicture ? <div className="imgPost-container">
+                    <img src={postPicture} alt="" className='receiverImg' />
+                </div> : null
                 }
-
             </div>
-
-
         </form>
-
-
-
     </>
     )
 }
