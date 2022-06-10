@@ -46,11 +46,12 @@ export default function Like({ post }) {
             }
         })
             .then((res) => {
-                window.location.reload()
             })
             .catch((err) => console.log(err))
 
         setIsLike(true)
+        window.location.reload()
+
     }
 
     const handleUnlike = () => {
@@ -63,11 +64,12 @@ export default function Like({ post }) {
             }
         })
             .then((res) => {
-                window.location.reload()
             })
             .catch((err) => console.log(err))
 
         setIsLike(false)
+        window.location.reload()
+
     }
 
     return (
@@ -75,14 +77,14 @@ export default function Like({ post }) {
             {userId && isLike === false && (
                 <>
                     <FontAwesomeIcon icon={faThumbsUp} className='thumbsUp' onClick={handleLike} />
-                    <span>{count}</span>
+                    <span>{post._count.like}</span>
                 </>
             )}
 
             {userId && isLike === true && (
                 <>
                     <FontAwesomeIcon icon={faThumbsDown} className='thumbsDown' onClick={handleUnlike} />
-                    <span>{count}</span>
+                    <span>{post._count.like}</span>
                 </>
             )}
         </div>
