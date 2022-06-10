@@ -17,9 +17,7 @@ Then in the folder back run "npm install" then "npx prisma migrate dev" and "npx
 
 When your database is on, you can begin to run the backend by : 
 
-Run "npm run watch". This should both run the local server
-
-The app should reload automatically when you make a change to a file.
+Run "npm run start". This should both run the local server
 
 Use Ctrl+C in the terminal to stop the local server.
 
