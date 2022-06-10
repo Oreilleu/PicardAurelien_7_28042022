@@ -10,10 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Un user peut avoir plusieurs post mais un post n'a qu'un user
-// Image par default ? --- @default vlaue
-// Condition sur nombre de caractère du pseudo ou mdp ? -- contrainte prisma chuc
-
 model User {
   id       Int    @id @default(autoincrement())
   pseudo   String @unique
@@ -25,7 +21,6 @@ model User {
   like     Like[]
 }
 
-// Comment rendre video et picture non obligatoire ?
 model Post {
   id        Int      @id @default(autoincrement())
   message   String
@@ -36,7 +31,6 @@ model Post {
   userId    Int?
 }
 
-// Many to many
 model Like {
   Post   Post @relation(fields: [postId], references: [id])
   postId Int

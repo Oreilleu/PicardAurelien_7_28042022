@@ -5,15 +5,13 @@ NodeJS 12.14 or 14.0.
 React 18.1.0
 On Windows, these installations require to use PowerShell in administrator mode.
 
-Then, clone this repo, run npm install, and run npm install --save-dev run-script-os.
-
 # Database #
 
 This project use prisma's ORM to interact with mysql
 
-To start the database, launch your server's database 
+To start the database, launch your server's mysql 
 
-Then in the folder back run "npx prisma migrate dev" and "npx prisma generate"
+Then in the folder back run "npm install" then "npx prisma migrate dev" and "npx prisma generate"
 
 # Usage #
 
@@ -25,7 +23,7 @@ The app should reload automatically when you make a change to a file.
 
 Use Ctrl+C in the terminal to stop the local server.
 
-To run the browser go in the front folder, then run the command "npm run start"
+To run the browser go in the front folder, then run the command "npm install"  and "npm run start"
 
 ------------------------------------------------------------------------------------------------------
 
