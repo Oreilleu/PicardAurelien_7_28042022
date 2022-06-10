@@ -14,10 +14,8 @@ export default function Navbar() {
     const handleProfil = () => {
         if (isProfil === false) {
             setIsProfil(true);
-            console.log(isProfil);
         } else {
             setIsProfil(false);
-            console.log(isProfil);
         }
     };
 

@@ -50,8 +50,6 @@ module.exports.updateUser = (req, res) => {
   const { id } = req.params;
   const { pseudo } = req.body;
 
-  console.log(req.file);
-
   req.file
     ? user
         .update({

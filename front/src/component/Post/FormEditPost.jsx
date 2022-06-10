@@ -5,8 +5,6 @@ export default function FormEditPost({ post }) {
     const [message, setMessage] = useState(post.message)
     const [file, setFile] = useState('')
 
-    console.log(message)
-
     const data = new FormData()
     data.append('message', message)
     data.append('file', file)

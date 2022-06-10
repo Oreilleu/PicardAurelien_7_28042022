@@ -22,7 +22,6 @@ export default function SignInForm() {
       },
     })
       .then((user) => {
-        console.log(user)
         window.location = '/trending'
       })
       .catch((err) => {

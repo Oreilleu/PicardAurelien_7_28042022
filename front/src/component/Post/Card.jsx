@@ -20,10 +20,8 @@ export default function Card({ post }) {
     const handleEdit = () => {
         if (isEdit) {
             setIsEdit(false)
-            console.log(isEdit)
         } else {
             setIsEdit(true)
-            console.log(isEdit)
         }
     }
 

@@ -6,8 +6,6 @@ module.exports.createPost = async (req, res) => {
   const { id } = req.params;
   const { userId, message } = req.body;
 
-  console.log(req.file);
-
   req.file
     ? post
         .create({
@@ -132,7 +130,6 @@ module.exports.getLike = (req, res) => {
   like
     .findMany({})
     .then((like) => {
-      console.log(like);
       res.status(200).json(like);
     })
     .catch((err) => res.status(400).json(err));
@@ -141,7 +138,6 @@ module.exports.getLike = (req, res) => {
 module.exports.likePost = (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
-  let count = 0;
 
   like
     .create({
