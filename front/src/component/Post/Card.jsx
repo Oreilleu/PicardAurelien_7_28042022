@@ -8,11 +8,9 @@ import DeletePost from './DeletePost'
 import FormEditPost from './FormEditPost'
 
 export default function Card({ post }) {
-    // console.log(post)
     // Data
     const userData = useSelector(state => state.userReducer)
     const allUserData = useSelector(state => state.usersReducer)
-    const postData = useSelector(state => state.postReducer)
     const userId = useContext(UidContext)
 
     // State
@@ -42,7 +40,6 @@ export default function Card({ post }) {
                     <div className="card-picture-container">
                         <div className="img-container">
                             <img src={allUserData.map(user => {
-                                // Balise image border ?
                                 if (user.id === post.userId)
                                     return user.picture
                             }).join('')}
@@ -52,7 +49,9 @@ export default function Card({ post }) {
                         <div className="like">
                             <Like post={post} />
                         </div>
+
                         {
+                            // Monttre les boutton modifier et delete que si userId est est posteur ou si le compte est l'admin
                             userId === post.userId || userData.admin === 1 ? (
                                 <div className="update-post">
                                     <button onClick={handleEdit} className='modify'>Modifier</button>

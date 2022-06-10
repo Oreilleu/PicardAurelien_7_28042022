@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -19,7 +18,6 @@ export default function index() {
           path="/trending"
           exact
           component={Trending}
-          // isProfil={isProfil}
         ></Route>
         <Redirect to="/" />
       </Switch>

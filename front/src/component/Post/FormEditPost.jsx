@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { isEmpty } from '../utils'
 
 export default function FormEditPost({ post }) {
     const [message, setMessage] = useState(post.message)
@@ -12,8 +11,7 @@ export default function FormEditPost({ post }) {
     data.append('message', message)
     data.append('file', file)
 
-    const handleSubmit = (e) => {
-        // e.preventDefault()
+    const handleSubmit = () => {
         axios({
             method: 'put',
             url: (`${process.env.REACT_APP_API_URL}/api/post/${post.id}`),

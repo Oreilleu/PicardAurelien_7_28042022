@@ -11,6 +11,7 @@ export default function FormPost() {
     const [file, setFile] = useState('')
     const [postPicture, setPostPicture] = useState(null)
 
+    // Affiche la photo directement dans une div
     const handleFileReader = (e) => {
         setPostPicture(URL.createObjectURL(e.target.files[0]))
     }
@@ -35,27 +36,27 @@ export default function FormPost() {
     }
 
     return (
-    <>
-        <div className='img-container'>
-            <img src={userData.picture} alt="pic profil user" />
-        </div>
-        <form action="post" onSubmit={handleSubmit}>
-            <input type="text" className='text-form' placeholder={`Quoi de neuf ${userData.pseudo}`} onChange={(e) => setMessage(e.target.value)} />
-            <div className="btn-container">
-                <label htmlFor="file" className='labelFile'>Choisir un fichier</label>
-                <input type="file" id='file' placeholder='Ajouter une image' onChange={(e) => {
-                    handleFileReader(e)
-                    setFile(e.target.files[0])
-                }} className='inputFile' />
-                <input type="submit" className='send' />
-
-                {
-                    postPicture ? <div className="imgPost-container">
-                    <img src={postPicture} alt="" className='receiverImg' />
-                </div> : null
-                }
+        <>
+            <div className='img-container'>
+                <img src={userData.picture} alt="pic profil user" />
             </div>
-        </form>
-    </>
+            <form action="post" onSubmit={handleSubmit}>
+                <input type="text" className='text-form' placeholder={`Quoi de neuf ${userData.pseudo}`} onChange={(e) => setMessage(e.target.value)} />
+                <div className="btn-container">
+                    <label htmlFor="file" className='labelFile'>Choisir un fichier</label>
+                    <input type="file" id='file' placeholder='Ajouter une image' onChange={(e) => {
+                        handleFileReader(e)
+                        setFile(e.target.files[0])
+                    }} className='inputFile' />
+                    <input type="submit" className='send' />
+
+                    {
+                        postPicture ? <div className="imgPost-container">
+                            <img src={postPicture} alt="" className='receiverImg' />
+                        </div> : null
+                    }
+                </div>
+            </form>
+        </>
     )
 }

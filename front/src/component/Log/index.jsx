@@ -7,14 +7,14 @@ export default function Log() {
   const [signInModal, setSignInModal] = useState(false);
 
   const handleModals = (e) => {
-    if(e.target.id === 'register') {
+    if (e.target.id === 'register') {
       setSignInModal(false)
       setSignUpModal(true)
     } else if (e.target.id === 'login') {
       setSignInModal(true)
       setSignUpModal(false)
     }
-   }
+  }
 
   return (
     <div className="connection-form">

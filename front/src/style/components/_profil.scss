@@ -1,5 +1,5 @@
 .profil-container {
-    width: 30%;
+    width: 350px;
     height: 500px;
     background-color: lighten($color-2, 3%);
     border: 1px solid $color-1;
@@ -26,7 +26,7 @@
         }
     }
 
-    .img-container {
+    .img-container-profil {
         width: 200px;
         height: 200px;
         border-radius: 50%;

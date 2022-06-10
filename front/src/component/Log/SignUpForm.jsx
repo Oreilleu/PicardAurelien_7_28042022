@@ -7,9 +7,6 @@ export default function SignUpForm() {
   const [pseudo, setPseudo] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  // console.log(pseudo, email, password)
-
-
 
   const handleRegister = (e) => {
     e.preventDefault()
@@ -28,14 +25,10 @@ export default function SignUpForm() {
       },
     })
       .then((res) => {
-        // console.log(res.data.message)
         setFormSubmit(true)
-
       })
       .catch(err => {
         if (err.response.status === 400) {
-          // console.log(err)
-          // console.log(err.response.data.message)
           showMessage.innerHTML = err.response.data.message
         }
       })

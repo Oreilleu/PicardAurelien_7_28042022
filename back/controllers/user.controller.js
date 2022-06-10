@@ -4,10 +4,9 @@ const prisma = new PrismaClient();
 const { user, post, like } = prisma;
 
 module.exports.getAllUser = (req, res) => {
-  //   console.log(req.body);
   user
     .findMany({
-      select : {
+      select: {
         id: true,
         pseudo: true,
         email: true,
@@ -15,7 +14,7 @@ module.exports.getAllUser = (req, res) => {
         admin: true,
         posts: true,
         like: true,
-      }
+      },
     })
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(400).json({ err }));
@@ -26,10 +25,10 @@ module.exports.getOneUser = (req, res) => {
 
   user
     .findUnique({
-      where: { 
-        id: parseInt(id) 
+      where: {
+        id: parseInt(id),
       },
-      select : {
+      select: {
         id: true,
         pseudo: true,
         email: true,
@@ -37,11 +36,10 @@ module.exports.getOneUser = (req, res) => {
         admin: true,
         posts: true,
         like: true,
-      }
+      },
     })
     .then((user) =>
       user
-      // Condition user et delete .password
         ? res.status(200).json(user)
         : res.status(404).json({ message: `L'utilisateur n'existe pas ${id}` })
     )
@@ -52,7 +50,7 @@ module.exports.updateUser = (req, res) => {
   const { id } = req.params;
   const { pseudo } = req.body;
 
-  console.log(req.file)
+  console.log(req.file);
 
   req.file
     ? user
@@ -67,9 +65,7 @@ module.exports.updateUser = (req, res) => {
             }`,
           },
         })
-        .then(() =>
-          res.status(201).json({ message: 'Utilisateur modifier' })
-        )
+        .then(() => res.status(201).json({ message: 'Utilisateur modifier' }))
         .catch((err) => console.log(err))
     : user
         .update({
@@ -89,9 +85,9 @@ module.exports.deleteUser = (req, res) => {
 
   const deleteLike = like.deleteMany({
     where: {
-      userId: parseInt(id)
-    }
-  })
+      userId: parseInt(id),
+    },
+  });
 
   const deletePost = post.deleteMany({
     where: {

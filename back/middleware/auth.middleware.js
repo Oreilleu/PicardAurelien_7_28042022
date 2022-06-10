@@ -3,7 +3,6 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports.checkUser = (req, res, next) => {
-  // console.log(req.cookies.jwt);
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.JWT_KEY_TOKEN, async (err, decodedToken) => {
@@ -31,7 +30,6 @@ module.exports.requireAuth = (req, res, next) => {
       if (err) {
         console.log(err);
       } else {
-        // console.log(decodedToken.id);
         next();
       }
     });

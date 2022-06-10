@@ -10,13 +10,7 @@ export default function Like({ post }) {
 
     const [isLike, setIsLike] = useState(false)
     const likeData = useSelector(state => state.likeReducer)
-    const [count, setCount] = useState(post._count.like)
     const userId = useContext(UidContext)
-
-
-    // useEffect(() => {
-    //     setCount(post._count.like)
-    // }, [post, count])
 
     useEffect(() => {
         arrayPostId.map(like => {

@@ -6,13 +6,9 @@ import Logout from "./Log/Logout";
 import Profil from "./Profil";
 
 export default function Navbar() {
-    // Mettre variable context
     const userId = useContext(UidContext)
     const userData = useSelector((state) => state.userReducer)
 
-    // Je veux savoir si profil est true ou false et le faire remonter a la page trending
-
-    // Mettre dans redux
     const [isProfil, setIsProfil] = useState(false);
 
     const handleProfil = () => {

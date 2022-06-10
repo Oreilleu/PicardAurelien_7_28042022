@@ -1,3 +1,4 @@
+// Verifie si la valeur est vide
 export const isEmpty = (value) => {
   return (
     value === undefined ||

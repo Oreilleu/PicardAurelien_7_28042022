@@ -23,11 +23,9 @@ export default function SignInForm() {
     })
       .then((user) => {
         console.log(user)
-        // Que faire avec le token auth
         window.location = '/trending'
       })
       .catch((err) => {
-        // console.log(err)
         showError.innerHTML = err.response.data.error
       })
 

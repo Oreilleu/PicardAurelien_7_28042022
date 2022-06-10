@@ -13,7 +13,7 @@ export default function Home() {
       ) : (
         <div className="log-container">
           <Log />
-          <div className="img-container">
+          <div className="img-container-home">
             <img src="./img/icon-above-font.png" alt="icon groupomania" />
           </div>
         </div>

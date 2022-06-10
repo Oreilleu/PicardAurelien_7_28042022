@@ -23,27 +23,7 @@ module.exports.createPost = async (req, res) => {
             },
           },
         })
-        .then(
-          (post) => res.send(post)
-          // image
-          //   .create({
-          //     data: {
-          //       image: `${req.protocol}://${req.get('host')}/images/post/${
-          //         req.file.filename
-          //       }`,
-          //       Post: {
-          //         connect: {
-          //           id: JSON.parse(post.id),
-          //         },
-          //       },
-          //     },
-          //   })
-          //   .then((post) => res.send({ post }))
-          //   .catch((err) => {
-          //     console.log(err);
-          //     res.send({ err });
-          //   })
-        )
+        .then((post) => res.send(post))
         .catch((err) => {
           console.log(err);
           res.send({ err });
@@ -66,12 +46,10 @@ module.exports.createPost = async (req, res) => {
         });
 };
 
-// Renvoyé les posts par ordre chronologique -- sort ?
-// Order by
 module.exports.getAllPost = (req, res) => {
   prisma.Post.findMany({
     include: {
-      _count: true  
+      _count: true,
     },
     orderBy: {
       createdAt: 'desc',
@@ -180,8 +158,6 @@ module.exports.unlikePost = (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
 
-  // Faire un tableau ici qui renvoi le nombre de fois ou le postId = userId
-
   like
     .deleteMany({
       where: {
@@ -189,17 +165,6 @@ module.exports.unlikePost = (req, res) => {
         userId: parseInt(userId),
       },
     })
-    .then(
-      (unlike) => console.log(unlike)
-      // post.count == 0
-      //   ? res.send({ message: 'post non liké' })
-      //   : post.map((postLike) => {
-      //       let compt = 0;
-      //       if (postLike.postId === id) {
-      //         compt++;
-      //       }
-      //       res.status(200).json(compt);
-      //     })
-    )
+    .then((unlike) => res.status(200).send(unlike))
     .catch((err) => res.send({ message: 'Post non liké' }));
 };

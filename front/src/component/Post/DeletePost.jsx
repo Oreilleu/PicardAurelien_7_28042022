@@ -1,11 +1,7 @@
-import React, { useState } from 'react'
-// import { useSelector } from 'react-redux'
-// import { UidContext } from '../Appcontext'
+import React from 'react'
 import axios from 'axios'
 
 export default function DeletePost({ post }) {
-    // const userId = useContext(UidContext)
-
 
     const deletePost = () => {
         axios({
@@ -16,7 +12,6 @@ export default function DeletePost({ post }) {
             .then(res => window.location.reload())
             .catch(err => console.log(err))
     }
-
 
     return (<>
         <button onClick={deletePost} className='delete'>Supprimer</button>

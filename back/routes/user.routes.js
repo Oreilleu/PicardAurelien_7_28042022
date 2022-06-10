@@ -8,7 +8,6 @@ router.post('/register', authCtrl.signUp);
 router.post('/login', authCtrl.signIn);
 router.get('/logout', authCtrl.logout);
 
-//multer sur put 
 // CRUD User
 router.get('/', userCtrl.getAllUser);
 router.get('/:id', userCtrl.getOneUser);
