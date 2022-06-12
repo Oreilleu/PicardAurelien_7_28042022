@@ -44,7 +44,7 @@ En ce qui concerne l’aspect graphique, nous allons pour le moment limiter les 
 - respecter l’identité graphique fournie dans le brief ;
 - produire quelque chose de responsive qui s'adapte aux desktop, tablette et mobile ;
 - tout le reste est expliqué sur le brief. À part ça, tu as carte blanche, mais attention à ne pas te lancer dans quelque chose de trop compliqué.
-- 
+
 Côté technique aussi, nous sommes assez libres sur ce projet ; néanmoins il y a quelques éléments qu’il faut avoir en tête avant de commencer le projet :
 - pour ce nouveau projet on part vraiment de zéro, tu vas donc devoir mettre en place le backend, le frontend et la base de données ;
 - le projet doit être codé en JavaScript et respecter les standards WCAG ;
