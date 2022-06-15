@@ -12,23 +12,17 @@ export default function Like({ post }) {
     const likeData = useSelector(state => state.likeReducer)
     const userId = useContext(UidContext)
 
+    post["like"] = []
+
+    likeData.map(data => {
+        if (data.postId === post.id) {
+            post.like.push(data.userId)
+        }
+    })
+
     useEffect(() => {
-        arrayPostId.map(like => {
-            if (like === post.id) {
-                if (arrayUserId.includes(userId))
-                    setIsLike(true)
-            }
-        })
-    }, [])
-
-    let arrayUserId = []
-    let arrayPostId = []
-
-    for (let i = 0; i < likeData.length; i++) {
-        arrayUserId.push(likeData[i].userId)
-        arrayPostId.push(likeData[i].postId)
-    }
-
+        if (post.like.includes(userId)) setIsLike(true)
+    }, [isLike])
 
     const handleLike = () => {
         axios({
@@ -67,6 +61,7 @@ export default function Like({ post }) {
         window.location.reload()
 
     }
+
 
     return (
         <div className="like-container">
