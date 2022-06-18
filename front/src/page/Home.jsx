@@ -8,16 +8,14 @@ export default function Home() {
 
   return (
     <div className="profil-page">
-      {uid ? (
-        <Trending />
-      ) : (
-        <div className="log-container">
+      {
+        uid ? <Trending /> : <div className="log-container">
           <Log />
           <div className="img-container-home">
             <img src="./img/icon-above-font.png" alt="icon groupomania" />
           </div>
         </div>
-      )}
+      }
     </div>
   )
 }

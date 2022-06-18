@@ -6,6 +6,10 @@ module.exports.createPost = async (req, res) => {
   const { id } = req.params;
   const { userId, message } = req.body;
 
+  if (userId != req.auth.user.id) {
+    return res.cookie('jwt', '', { maxAge: 1 });
+  }
+
   req.file
     ? post
         .create({
@@ -73,7 +77,11 @@ module.exports.getOnePost = (req, res) => {
 
 module.exports.updatePost = (req, res) => {
   const { id } = req.params;
-  const { message } = req.body;
+  const { userId, message } = req.body;
+
+  if (userId != req.auth.user.id) {
+    return res.cookie('jwt', '', { maxAge: 1 });
+  }
 
   req.file
     ? post
@@ -108,21 +116,34 @@ module.exports.updatePost = (req, res) => {
 module.exports.deletePost = (req, res) => {
   const { id } = req.params;
 
-  const deleteLike = like.deleteMany({
-    where: {
-      postId: parseInt(id),
-    },
-  });
+  post
+    .findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    })
+    .then((data) => {
+      if (data.userId === req.auth.user.id) {
+        const deleteLike = like.deleteMany({
+          where: {
+            postId: parseInt(id),
+          },
+        });
 
-  const deletePost = post.delete({
-    where: {
-      id: parseInt(id),
-    },
-  });
+        const deletePost = post.delete({
+          where: {
+            id: parseInt(id),
+          },
+        });
 
-  prisma
-    .$transaction([deleteLike, deletePost])
-    .then(() => res.status(200).json({ message: 'message supprimer' }))
+        prisma
+          .$transaction([deleteLike, deletePost])
+          .then(() => res.status(200).json({ message: 'message supprimer' }))
+          .catch((err) => console.log(err));
+      } else {
+        return res.cookie('jwt', '', { maxAge: 1 });
+      }
+    })
     .catch((err) => console.log(err));
 };
 

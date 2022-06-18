@@ -27,7 +27,23 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // jwt
 app.get('*', checkUser);
+app.post('*', checkUser);
+app.put('*', checkUser);
+app.delete('*', checkUser);
+
 app.get('/jwtid', requireAuth, (req, res) => {
+  if (res.locals.user === null) return console.log('No token');
+  res.status(200).json(res.locals.user.id);
+});
+app.post('/jwtid', requireAuth, (req, res) => {
+  if (res.locals.user === null) return console.log('No token');
+  res.status(200).json(res.locals.user.id);
+});
+app.put('/jwtid', requireAuth, (req, res) => {
+  if (res.locals.user === null) return console.log('No token');
+  res.status(200).json(res.locals.user.id);
+});
+app.delete('/jwtid', requireAuth, (req, res) => {
   if (res.locals.user === null) return console.log('No token');
   res.status(200).json(res.locals.user.id);
 });

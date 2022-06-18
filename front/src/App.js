@@ -24,7 +24,7 @@ export default function App() {
     };
     fetchJwt();
 
-    if (userId) dispatch(getUser(userId));
+    if (userId) dispatch(getUser(userId))
   }, [userId]);
 
   return (

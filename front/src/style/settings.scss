@@ -27,10 +27,13 @@ $color-3: #4E5166;
     background-color: $color-2;
     border: 1px solid $color-3;
     border-radius: 10px;
+    transform: scale(1);
     transition: 500ms;
 
     &:hover {
         background-color: $color-1;
+        transform: scale(1.1);
+
     }
 }
 

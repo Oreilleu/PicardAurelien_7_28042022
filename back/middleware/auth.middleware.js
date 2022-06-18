@@ -14,6 +14,7 @@ module.exports.checkUser = (req, res, next) => {
           where: { id: decodedToken.id },
         });
         res.locals.user = user;
+        req.auth = {user}
         next();
       }
     });

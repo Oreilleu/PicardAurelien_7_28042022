@@ -14,11 +14,7 @@ export default function index() {
       <Navbar />
       <Switch>
         <Route path="/" exact component={Home}></Route>
-        <Route
-          path="/trending"
-          exact
-          component={Trending}
-        ></Route>
+        <Route path="/trending" exact component={Trending}></Route>
         <Redirect to="/" />
       </Switch>
     </Router>

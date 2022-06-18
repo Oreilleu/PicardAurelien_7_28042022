@@ -50,6 +50,10 @@ module.exports.updateUser = (req, res) => {
   const { id } = req.params;
   const { pseudo } = req.body;
 
+  if (id != req.auth.user.id) {
+    return res.cookie('jwt', '', { maxAge: 1 });
+  }
+
   req.file
     ? user
         .update({
@@ -80,6 +84,10 @@ module.exports.updateUser = (req, res) => {
 
 module.exports.deleteUser = (req, res) => {
   const { id } = req.params;
+
+  if (id != req.auth.user.id) {
+    return res.cookie('jwt', '', { maxAge: 1 });
+  }
 
   const deleteLike = like.deleteMany({
     where: {

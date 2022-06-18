@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useContext } from 'react'
+import { UidContext } from '../Appcontext'
+
 
 export default function FormEditPost({ post }) {
+
+    const userId = useContext(UidContext)
     const [message, setMessage] = useState(post.message)
     const [file, setFile] = useState('')
 
     const data = new FormData()
     data.append('message', message)
     data.append('file', file)
+    data.append('userId', userId)
 
     const handleSubmit = () => {
         axios({
