@@ -18,6 +18,9 @@ export default function Trending() {
       dispatch(getPost())
       setLoadPost(false)
     }
+    if (!userId) {
+      window.location = '/'
+    }
   }, [loadPost, dispatch])
 
   return (

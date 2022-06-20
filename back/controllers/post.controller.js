@@ -79,11 +79,10 @@ module.exports.updatePost = (req, res) => {
   const { id } = req.params;
   const { userId, message } = req.body;
 
-  if (userId != req.auth.user.id) {
-    return res.cookie('jwt', '', { maxAge: 1 });
-  }
+  console.log(userId)
 
-  req.file
+  if (userId == req.auth.user.id || req.auth.user.admin === 1) {
+    req.file
     ? post
         .update({
           where: {
@@ -111,10 +110,17 @@ module.exports.updatePost = (req, res) => {
         })
         .then((post) => res.status(201).json({ message: 'Post modifié', post }))
         .catch((err) => res.status(400).json({ err }));
+  } else {
+    return res.cookie('jwt', '', { maxAge: 1 });
+  }
+
+  
 };
 
 module.exports.deletePost = (req, res) => {
   const { id } = req.params;
+
+  // console.log(req.auth)
 
   post
     .findUnique({
@@ -123,7 +129,7 @@ module.exports.deletePost = (req, res) => {
       },
     })
     .then((data) => {
-      if (data.userId === req.auth.user.id) {
+      if (data.userId === req.auth.user.id || req.auth.user.admin === 1) {
         const deleteLike = like.deleteMany({
           where: {
             postId: parseInt(id),
