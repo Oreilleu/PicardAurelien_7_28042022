@@ -120,8 +120,6 @@ module.exports.updatePost = (req, res) => {
 module.exports.deletePost = (req, res) => {
   const { id } = req.params;
 
-  // console.log(req.auth)
-
   post
     .findUnique({
       where: {
