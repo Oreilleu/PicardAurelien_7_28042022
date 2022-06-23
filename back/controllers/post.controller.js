@@ -3,7 +3,6 @@ const prisma = new PrismaClient();
 const { post, like, image } = prisma;
 
 module.exports.createPost = async (req, res) => {
-  const { id } = req.params;
   const { userId, message } = req.body;
 
   if (userId != req.auth.user.id) {
@@ -79,42 +78,40 @@ module.exports.updatePost = (req, res) => {
   const { id } = req.params;
   const { userId, message } = req.body;
 
-  console.log(userId)
-
   if (userId == req.auth.user.id || req.auth.user.admin === 1) {
     req.file
-    ? post
-        .update({
-          where: {
-            id: parseInt(id),
-          },
-          data: {
-            message,
-            picture: `${req.protocol}://${req.get('host')}/images/post/${
-              req.file.filename
-            }`,
-          },
-        })
-        .then((post) => {
-          res.send(post);
-        })
-        .catch((err) => res.status(400).json({ err }))
-    : post
-        .update({
-          where: {
-            id: parseInt(id),
-          },
-          data: {
-            message,
-          },
-        })
-        .then((post) => res.status(201).json({ message: 'Post modifié', post }))
-        .catch((err) => res.status(400).json({ err }));
+      ? post
+          .update({
+            where: {
+              id: parseInt(id),
+            },
+            data: {
+              message,
+              picture: `${req.protocol}://${req.get('host')}/images/post/${
+                req.file.filename
+              }`,
+            },
+          })
+          .then((post) => {
+            res.send(post);
+          })
+          .catch((err) => res.status(400).json({ err }))
+      : post
+          .update({
+            where: {
+              id: parseInt(id),
+            },
+            data: {
+              message,
+            },
+          })
+          .then((post) =>
+            res.status(201).json({ message: 'Post modifié', post })
+          )
+          .catch((err) => res.status(400).json({ err }));
   } else {
     return res.cookie('jwt', '', { maxAge: 1 });
   }
-
-  
 };
 
 module.exports.deletePost = (req, res) => {

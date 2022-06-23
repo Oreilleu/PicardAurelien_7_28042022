@@ -5,7 +5,6 @@ import { isEmpty } from '../component/utils'
 import { UidContext } from '../component/Appcontext'
 import Card from '../component/Post/Card'
 import FormPost from '../component/Post/FormPost'
-import { Redirect } from 'react-router-dom'
 
 export default function Trending() {
   const [loadPost, setLoadPost] = useState(true)
